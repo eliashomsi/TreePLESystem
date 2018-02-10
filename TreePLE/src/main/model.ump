@@ -1,0 +1,54 @@
+namespace ca.mcgill.ecse321.treeple.model;
+class TreePLESystem {
+  1 <@>- * Transaction transactions;
+  1 <@>- * Resident residents;
+  1 <@>- * Municipality municipalities;
+  1 <@>- * Tree trees;
+}
+
+class Tree {
+  lazy TreeSpecies species;
+  lazy TreeStatus status;
+  int diameter;
+  
+  1-- 1 Location treeLocation;
+  * -- 1 Municipality municipality;
+}
+
+class Municipality  {
+  name;
+}
+
+enum TreeSpecies  { Oak, Maple}
+
+enum TreeStatus  {Healthy, CutDown, Planted, Diseased}
+
+class Location {
+  double longitude ;
+  double latitude;
+}
+
+class Resident {
+  autounique id;
+  name;
+  email;
+  passwordSalted;
+  1-- 1 Location propertyLocation;
+}
+
+class Transaction {
+  Time time;
+  Date date;
+  * transactions -- 1 Resident resident;
+  * transactions -- 1 Tree tree;
+   lazy TreeStatus changedStatusFrom;
+   lazy TreeStatus changedStatusTo;
+}
+
+class EnvironmentalScientist {
+  isA Resident;
+}
+
+class MunicipalArborist {
+  isA Resident;
+}
