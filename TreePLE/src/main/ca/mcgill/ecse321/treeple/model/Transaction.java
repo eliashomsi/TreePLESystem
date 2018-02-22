@@ -1,11 +1,11 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.27.0.3728.d139ed893 modeling language!*/
+/*This code was generated using the UMPLE 1.26.1-f40f105-3613 modeling language!*/
 
 package ca.mcgill.ecse321.treeple.model;
 import java.sql.Time;
 import java.sql.Date;
 
-// line 39 "../../../../../model.ump"
+// line 40 "../../../../../model.ump"
 public class Transaction
 {
 
@@ -13,7 +13,7 @@ public class Transaction
   // ENUMERATIONS
   //------------------------
 
-  public enum TreeStatus { Healthy, CutDown, Planted, Diseased }
+  public enum TreeStatus { Healthy, CutDown, Planted, Diseased, ToBeCutDown }
 
   //------------------------
   // MEMBER VARIABLES
@@ -187,22 +187,13 @@ public class Transaction
   {
     Resident placeholderResident = resident;
     this.resident = null;
-    if(placeholderResident != null)
-    {
-      placeholderResident.removeTransaction(this);
-    }
+    placeholderResident.removeTransaction(this);
     Tree placeholderTree = tree;
     this.tree = null;
-    if(placeholderTree != null)
-    {
-      placeholderTree.removeTransaction(this);
-    }
+    placeholderTree.removeTransaction(this);
     TreePLESystem placeholderTreePLESystem = treePLESystem;
     this.treePLESystem = null;
-    if(placeholderTreePLESystem != null)
-    {
-      placeholderTreePLESystem.removeTransaction(this);
-    }
+    placeholderTreePLESystem.removeTransaction(this);
   }
 
 

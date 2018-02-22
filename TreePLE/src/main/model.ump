@@ -7,6 +7,7 @@ class TreePLESystem {
 }
 
 class Tree {
+  autounique id;
   lazy TreeSpecies species;
   lazy TreeStatus status;
   int diameter;
@@ -19,9 +20,9 @@ class Municipality  {
   name;
 }
 
-enum TreeSpecies  { Oak, Maple}
+enum TreeSpecies  {Oak, Maple}
 
-enum TreeStatus  {Healthy, CutDown, Planted, Diseased}
+enum TreeStatus  {Healthy, CutDown, Planted, Diseased, ToBeCutDown}
 
 class Location {
   double longitude ;

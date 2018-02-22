@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.27.0.3728.d139ed893 modeling language!*/
+/*This code was generated using the UMPLE 1.26.1-f40f105-3613 modeling language!*/
 
 package ca.mcgill.ecse321.treeple.model;
 import java.util.*;
 
-// line 18 "../../../../../model.ump"
+// line 19 "../../../../../model.ump"
 public class Municipality
 {
 
@@ -109,7 +109,7 @@ public class Municipality
   {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
+
   public Tree addTree(int aDiameter, Location aTreeLocation, TreePLESystem aTreePLESystem)
   {
     return new Tree(aDiameter, aTreeLocation, this, aTreePLESystem);
@@ -181,10 +181,7 @@ public class Municipality
   {
     TreePLESystem placeholderTreePLESystem = treePLESystem;
     this.treePLESystem = null;
-    if(placeholderTreePLESystem != null)
-    {
-      placeholderTreePLESystem.removeMunicipality(this);
-    }
+    placeholderTreePLESystem.removeMunicipality(this);
     for(int i=trees.size(); i > 0; i--)
     {
       Tree aTree = trees.get(i - 1);

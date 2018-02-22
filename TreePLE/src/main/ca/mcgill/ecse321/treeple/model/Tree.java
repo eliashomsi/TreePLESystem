@@ -1,5 +1,5 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.27.0.3728.d139ed893 modeling language!*/
+/*This code was generated using the UMPLE 1.26.1-f40f105-3613 modeling language!*/
 
 package ca.mcgill.ecse321.treeple.model;
 import java.util.*;
@@ -15,7 +15,13 @@ public class Tree
   //------------------------
 
   public enum TreeSpecies { Oak, Maple }
-  public enum TreeStatus { Healthy, CutDown, Planted, Diseased }
+  public enum TreeStatus { Healthy, CutDown, Planted, Diseased, ToBeCutDown }
+
+  //------------------------
+  // STATIC VARIABLES
+  //------------------------
+
+  private static int nextId = 1;
 
   //------------------------
   // MEMBER VARIABLES
@@ -25,6 +31,9 @@ public class Tree
   private TreeSpecies species;
   private TreeStatus status;
   private int diameter;
+
+  //Autounique Attributes
+  private int id;
 
   //Tree Associations
   private Location treeLocation;
@@ -39,6 +48,7 @@ public class Tree
   public Tree(int aDiameter, Location aTreeLocation, Municipality aMunicipality, TreePLESystem aTreePLESystem)
   {
     diameter = aDiameter;
+    id = nextId++;
     if (aTreeLocation == null || aTreeLocation.getTree() != null)
     {
       throw new RuntimeException("Unable to create Tree due to aTreeLocation");
@@ -60,6 +70,7 @@ public class Tree
   public Tree(int aDiameter, double aLongitudeForTreeLocation, double aLatitudeForTreeLocation, Resident aResidentForTreeLocation, Municipality aMunicipality, TreePLESystem aTreePLESystem)
   {
     diameter = aDiameter;
+    id = nextId++;
     treeLocation = new Location(aLongitudeForTreeLocation, aLatitudeForTreeLocation, this, aResidentForTreeLocation);
     boolean didAddMunicipality = setMunicipality(aMunicipality);
     if (!didAddMunicipality)
@@ -115,6 +126,11 @@ public class Tree
   public int getDiameter()
   {
     return diameter;
+  }
+
+  public int getId()
+  {
+    return id;
   }
 
   public Location getTreeLocation()
@@ -204,7 +220,7 @@ public class Tree
   {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
+
   public Transaction addTransaction(Time aTime, Date aDate, Resident aResident, TreePLESystem aTreePLESystem)
   {
     return new Transaction(aTime, aDate, aResident, this, aTreePLESystem);
@@ -282,16 +298,10 @@ public class Tree
     }
     Municipality placeholderMunicipality = municipality;
     this.municipality = null;
-    if(placeholderMunicipality != null)
-    {
-      placeholderMunicipality.removeTree(this);
-    }
+    placeholderMunicipality.removeTree(this);
     TreePLESystem placeholderTreePLESystem = treePLESystem;
     this.treePLESystem = null;
-    if(placeholderTreePLESystem != null)
-    {
-      placeholderTreePLESystem.removeTree(this);
-    }
+    placeholderTreePLESystem.removeTree(this);
     for(int i=transactions.size(); i > 0; i--)
     {
       Transaction aTransaction = transactions.get(i - 1);
@@ -303,6 +313,7 @@ public class Tree
   public String toString()
   {
     return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
             "diameter" + ":" + getDiameter()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "species" + "=" + (getSpecies() != null ? !getSpecies().equals(this)  ? getSpecies().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "status" + "=" + (getStatus() != null ? !getStatus().equals(this)  ? getStatus().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +

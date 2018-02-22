@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.27.0.3728.d139ed893 modeling language!*/
+/*This code was generated using the UMPLE 1.26.1-f40f105-3613 modeling language!*/
 
 package ca.mcgill.ecse321.treeple.model;
 import java.util.*;
 
-// line 52 "../../../../../model.ump"
+// line 53 "../../../../../model.ump"
 public class MunicipalArborist extends Resident
 {
 

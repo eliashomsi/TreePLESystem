@@ -1,12 +1,12 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.27.0.3728.d139ed893 modeling language!*/
+/*This code was generated using the UMPLE 1.26.1-f40f105-3613 modeling language!*/
 
 package ca.mcgill.ecse321.treeple.model;
 import java.util.*;
 import java.sql.Time;
 import java.sql.Date;
 
-// line 31 "../../../../../model.ump"
+// line 32 "../../../../../model.ump"
 public class Resident
 {
 
@@ -182,7 +182,7 @@ public class Resident
   {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
+
   public Transaction addTransaction(Time aTime, Date aDate, Tree aTree, TreePLESystem aTreePLESystem)
   {
     return new Transaction(aTime, aDate, this, aTree, aTreePLESystem);
@@ -260,10 +260,7 @@ public class Resident
     }
     TreePLESystem placeholderTreePLESystem = treePLESystem;
     this.treePLESystem = null;
-    if(placeholderTreePLESystem != null)
-    {
-      placeholderTreePLESystem.removeResident(this);
-    }
+    placeholderTreePLESystem.removeResident(this);
     for(int i=transactions.size(); i > 0; i--)
     {
       Transaction aTransaction = transactions.get(i - 1);
