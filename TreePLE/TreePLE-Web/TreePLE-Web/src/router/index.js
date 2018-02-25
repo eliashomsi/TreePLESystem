@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import TreeMap from '@/components/TreeMap'
+import Map from '@/components/TreeMap'
 Vue.use(Router)
 
 export default new Router({
@@ -8,7 +8,7 @@ export default new Router({
     {
       path: '/',
       name: 'TreeMap',
-      component: TreeMap
+      component: Map
     }
   ]
 })
