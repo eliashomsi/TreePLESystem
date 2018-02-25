@@ -27,11 +27,11 @@ import ca.mcgill.ecse321.treeple.model.Resident;
 import ca.mcgill.ecse321.treeple.model.Transaction;
 import ca.mcgill.ecse321.treeple.model.Tree;
 import ca.mcgill.ecse321.treeple.service.InvalidInputException;
+import ca.mcgill.ecse321.treeple.service.Token;
 import ca.mcgill.ecse321.treeple.service.TreePLEService;
 
 @RestController
 public class TreePLERestController {
-
 	@Autowired
 	private TreePLEService service;
 
@@ -63,7 +63,7 @@ public class TreePLERestController {
 		}
 		return municipalities;
 	}
-	
+
 	@GetMapping(value = { "/residents", "/residents/" })
 	public List<ResidentDto> findAllResidents() {
 		List<ResidentDto> residents = new ArrayList<>();
@@ -72,7 +72,7 @@ public class TreePLERestController {
 		}
 		return residents;
 	}
-	
+
 	@GetMapping(value = { "/transactions", "/transactions/" })
 	public List<TransactionDto> findAllTransactions() {
 		List<TransactionDto> transactions = new ArrayList<>();
@@ -101,6 +101,17 @@ public class TreePLERestController {
 		return convertToDto(t);
 	}
 
+	@PostMapping(value = { "/login/", "/login" })
+	public Token login(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password)
+			throws InvalidInputException {
+		return service.checkLogin(email, password);
+	}
+
+	@PostMapping(value = { "/checkToken/", "/checkToken" })
+	public boolean checkToken(@RequestParam(name = "token") String token) throws InvalidInputException {
+		return service.checkTokenValidity(token);
+	}
+
 	@PostMapping(value = { "/municipalities/{name}", "/municipalities/{name}/" })
 	public MunicipalityDto createMunicipality(@PathVariable("name") String name) throws InvalidInputException {
 		Municipality m = service.createMunicipality(name);
@@ -108,28 +119,31 @@ public class TreePLERestController {
 	}
 
 	@PostMapping(value = { "/residents/", "/residents" })
-	public ResidentDto createResident(@RequestParam(name = "name") String aName, @RequestParam(name = "email") String aEmail,
-			@RequestParam(name = "password") String aPassword, @RequestParam(name = "longitude") double lon,
-			@RequestParam(name = "latitude") double lat, @RequestParam(name = "type") String type) throws InvalidInputException {
-		
+	public ResidentDto createResident(@RequestParam(name = "name") String aName,
+			@RequestParam(name = "email") String aEmail, @RequestParam(name = "password") String aPassword,
+			@RequestParam(name = "longitude") double lon, @RequestParam(name = "latitude") double lat,
+			@RequestParam(name = "type") String type) throws InvalidInputException {
+
 		Resident r = service.CreateResident(aName, aEmail, aPassword, lon, lat, type);
 		return convertToDto(r);
 	}
 
 	@PostMapping(value = { "/transactions/", "/transactions" })
-	public TransactionDto CreateTransaction(@RequestParam(name = "time")  @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime   aTime, @RequestParam(name = "date") Date aDate,
-			@RequestParam(name = "resident") String residentName, @RequestParam(name = "tree") int treeid,
+	public TransactionDto CreateTransaction(
+			@RequestParam(name = "time") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime aTime,
+			@RequestParam(name = "date") Date aDate, @RequestParam(name = "resident") String residentName,
+			@RequestParam(name = "tree") int treeid,
 			@RequestParam(name = "status") Transaction.TreeStatus aChangedStatusTo) throws InvalidInputException {
-		
+
 		Resident resident = service.findResidentByName(residentName);
 		Tree tree = service.findTreeById(treeid);
-		
+
 		@SuppressWarnings("deprecation")
 		Time timesql = new Time(aTime.getHour(), aTime.getMinute(), 0);
-		
-		if(resident == null || tree == null)
+
+		if (resident == null || tree == null)
 			throw new InvalidInputException("Tree or Resident were not found");
-		Transaction t= service.CreateTransaction(timesql, aDate, resident, tree, aChangedStatusTo); 
+		Transaction t = service.CreateTransaction(timesql, aDate, resident, tree, aChangedStatusTo);
 		return convertToDto(t);
 	}
 
@@ -219,7 +233,7 @@ public class TreePLERestController {
 
 		return null;
 	}
-	
+
 	private Resident convertToDomainObject(ResidentDto rDto) {
 		for (Resident r : service.findAllResidents()) {
 			if (r.getName().contentEquals(rDto.getName()))
@@ -228,7 +242,6 @@ public class TreePLERestController {
 		return null;
 	}
 
-	
 	private Tree convertToDomainObject(TreeDto tDto) {
 		for (Tree t : service.findAllTrees()) {
 			if (t.getId() == tDto.getId())
@@ -237,7 +250,7 @@ public class TreePLERestController {
 
 		return null;
 	}
-	
+
 	private LocationDto convertToDto(Location e) {
 		// In simple cases, the mapper service is convenient
 		LocationDto t = modelMapper.map(e, LocationDto.class);
@@ -273,5 +286,7 @@ public class TreePLERestController {
 		td.setTree(convertToDto(tt.getTree()));
 		return td;
 	}
+
+	/** security related **/
 
 }

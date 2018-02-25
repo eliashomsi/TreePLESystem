@@ -1,6 +1,6 @@
-# eventregistration-frontend
+# treeple-web
 
-> A Vue.js frontend for Event Registration App
+> A Vue.js project
 
 ## Build Setup
 
