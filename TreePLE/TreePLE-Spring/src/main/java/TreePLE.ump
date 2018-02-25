@@ -3,7 +3,8 @@ class TreePLESystem {
   0..1 -> * Transaction transactions;
   0..1 -> * Resident residents;
   0..1 -> * Municipality municipalities;
-  0..1-> * Tree trees;
+  0..1 -> * Tree trees;
+  0..1 -> * Location locations;
 }
 
 class Tree {
