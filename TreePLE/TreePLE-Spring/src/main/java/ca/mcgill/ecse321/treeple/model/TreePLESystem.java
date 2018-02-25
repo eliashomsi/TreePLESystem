@@ -17,6 +17,7 @@ public class TreePLESystem
   private List<Resident> residents;
   private List<Municipality> municipalities;
   private List<Tree> trees;
+  private List<Location> locations;
 
   //------------------------
   // CONSTRUCTOR
@@ -28,6 +29,7 @@ public class TreePLESystem
     residents = new ArrayList<Resident>();
     municipalities = new ArrayList<Municipality>();
     trees = new ArrayList<Tree>();
+    locations = new ArrayList<Location>();
   }
 
   //------------------------
@@ -151,6 +153,36 @@ public class TreePLESystem
   public int indexOfTree(Tree aTree)
   {
     int index = trees.indexOf(aTree);
+    return index;
+  }
+
+  public Location getLocation(int index)
+  {
+    Location aLocation = locations.get(index);
+    return aLocation;
+  }
+
+  public List<Location> getLocations()
+  {
+    List<Location> newLocations = Collections.unmodifiableList(locations);
+    return newLocations;
+  }
+
+  public int numberOfLocations()
+  {
+    int number = locations.size();
+    return number;
+  }
+
+  public boolean hasLocations()
+  {
+    boolean has = locations.size() > 0;
+    return has;
+  }
+
+  public int indexOfLocation(Location aLocation)
+  {
+    int index = locations.indexOf(aLocation);
     return index;
   }
 
@@ -382,12 +414,70 @@ public class TreePLESystem
     return wasAdded;
   }
 
+  public static int minimumNumberOfLocations()
+  {
+    return 0;
+  }
+
+  public boolean addLocation(Location aLocation)
+  {
+    boolean wasAdded = false;
+    if (locations.contains(aLocation)) { return false; }
+    locations.add(aLocation);
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeLocation(Location aLocation)
+  {
+    boolean wasRemoved = false;
+    if (locations.contains(aLocation))
+    {
+      locations.remove(aLocation);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+
+  public boolean addLocationAt(Location aLocation, int index)
+  {  
+    boolean wasAdded = false;
+    if(addLocation(aLocation))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfLocations()) { index = numberOfLocations() - 1; }
+      locations.remove(aLocation);
+      locations.add(index, aLocation);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveLocationAt(Location aLocation, int index)
+  {
+    boolean wasAdded = false;
+    if(locations.contains(aLocation))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfLocations()) { index = numberOfLocations() - 1; }
+      locations.remove(aLocation);
+      locations.add(index, aLocation);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addLocationAt(aLocation, index);
+    }
+    return wasAdded;
+  }
+
   public void delete()
   {
     transactions.clear();
     residents.clear();
     municipalities.clear();
     trees.clear();
+    locations.clear();
   }
 
 }
