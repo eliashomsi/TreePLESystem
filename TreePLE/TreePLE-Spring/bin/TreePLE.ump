@@ -1,0 +1,113 @@
+namespace ca.mcgill.ecse321.treeple.model;
+class TreePLESystem {
+  0..1 -> * Transaction transactions;
+  0..1 -> * Resident residents;
+  0..1 -> * Municipality municipalities;
+  0..1 -> * Tree trees;
+  0..1 -> * Location locations;
+}
+
+class Tree {
+  autounique id;
+  lazy TreeSpecies species;
+  lazy TreeStatus status;
+  int diameter;
+  
+  0..1-- 1 Location treeLocation;
+  * -- 1 Municipality municipality;
+}
+
+class Municipality  {
+  unique name;
+}
+
+enum TreeSpecies  {
+ALDER,
+APPLE,
+ASH,
+ASPEN,
+BASSWOOD,
+BIRCH,
+BUCKEYE,
+BUCKTHORN,
+CALIFORNIALAUREL,
+CATALPA,
+CEDAR,
+CHERRY,
+CHESTNUT,
+CHINKAPIN,
+COTTONWOOD,
+CYPRESS,
+DOGWOOD,
+DOUGLASFIR,
+ELM,
+FIR,
+FILBERT,
+GIANTSEQUOIA,
+HAWTHORN,
+HAZEL,
+HEMLOCK,
+HONEYLOCUST,
+HOLLY,
+HORSECHESTNUT,
+INCENSECEDAR,
+JUNIPER,
+LARCH,
+LOCUST,
+MADRONE,
+MAPLE,
+MOUNTAINASH,
+MOUNTAINMAHOGANY,
+OAK,
+OREGONMYRTLE,
+PEAR,
+PINE,
+PLUM,
+POPLAR,
+REDCEDARARBORVITAE,
+REDWOOD,
+RUSSIANOLIVE,
+SPRUCE,
+SWEETGUM,
+SYCAMORE,
+TANOAK,
+TRUECEDAR,
+TRUEFIR,
+WALNUT,
+WHITECEDAR,
+WILLOW,
+YELLOWPOPLAR,
+YEW
+}
+
+enum TreeStatus  {HEALTHY, CUTDOWN, PLANTED, DISEASED, TOBECUTDOWN}
+
+class Location {
+  double longitude ;
+  double latitude;
+}
+
+class Resident {
+  autounique id;
+  name;
+  email;
+  salt;
+  passwordSalted;
+  0..1-- 1 Location propertyLocation;
+}
+
+class Transaction {
+  Time time;
+  Date date;
+  * transactions -- 1 Resident resident;
+  * transactions -- 1 Tree tree;
+   lazy TreeStatus changedStatusTo;
+}
+
+class EnvironmentalScientist {
+  isA Resident;
+}
+
+class MunicipalArborist {
+  isA Resident;
+}

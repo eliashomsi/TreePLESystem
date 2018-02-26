@@ -1,0 +1,89 @@
+<ca.mcgill.ecse321.treeple.model.TreePLESystem id="1">
+  <transactions id="2">
+    <Transaction id="3">
+      <time id="4">11:32:00</time>
+      <date id="5">2018-09-23</date>
+      <changedStatusTo>DISEASED</changedStatusTo>
+      <resident id="6">
+        <name>elias</name>
+        <email>hehe@heeh.ca</email>
+        <salt>$2a$10$Jj0TOM/4FTlObnd1lOcMpe</salt>
+        <passwordSalted>$2a$10$Jj0TOM/4FTlObnd1lOcMpe7JutSjWirVzcbopIxdzK.n5qbcfyCaG</passwordSalted>
+        <id>1</id>
+        <propertyLocation id="7">
+          <longitude>3.3</longitude>
+          <latitude>3.3</latitude>
+          <resident reference="6"/>
+        </propertyLocation>
+        <transactions id="8">
+          <Transaction reference="3"/>
+        </transactions>
+      </resident>
+      <tree id="9">
+        <species>MAPLE</species>
+        <status>DISEASED</status>
+        <diameter>3</diameter>
+        <id>1</id>
+        <treeLocation id="10">
+          <longitude>33.3</longitude>
+          <latitude>33.3</latitude>
+          <tree reference="9"/>
+        </treeLocation>
+        <municipality id="11">
+          <name>aef</name>
+          <trees id="12">
+            <Tree reference="9"/>
+          </trees>
+        </municipality>
+        <transactions id="13">
+          <Transaction reference="3"/>
+        </transactions>
+      </tree>
+    </Transaction>
+  </transactions>
+  <residents id="14">
+    <Resident reference="6"/>
+    <environmentalscientist id="15">
+      <name>elias2</name>
+      <email>hehe@heeh.ca</email>
+      <salt>$2a$10$C19qHiBI/d4LJxOYW3zqPO</salt>
+      <passwordSalted>$2a$10$C19qHiBI/d4LJxOYW3zqPOA0hDfb2X44zymI9yH9I7fDn3Cwc5xMq</passwordSalted>
+      <id>2</id>
+      <propertyLocation id="16">
+        <longitude>3.3</longitude>
+        <latitude>3.3</latitude>
+        <resident class="environmentalscientist" reference="15"/>
+      </propertyLocation>
+      <transactions id="17"/>
+    </environmentalscientist>
+  </residents>
+  <municipalities id="18">
+    <Municipality reference="11"/>
+    <Municipality id="19">
+      <name>treem</name>
+      <trees id="20">
+        <Tree id="21">
+          <species>OAK</species>
+          <status>PLANTED</status>
+          <diameter>3</diameter>
+          <id>2</id>
+          <treeLocation id="22">
+            <longitude>33.3</longitude>
+            <latitude>33.3</latitude>
+            <tree reference="21"/>
+          </treeLocation>
+          <municipality reference="19"/>
+          <transactions id="23"/>
+        </Tree>
+      </trees>
+    </Municipality>
+    <Municipality id="24">
+      <name>treem2</name>
+      <trees id="25"/>
+    </Municipality>
+  </municipalities>
+  <trees id="26">
+    <Tree reference="9"/>
+    <Tree reference="21"/>
+  </trees>
+</ca.mcgill.ecse321.treeple.model.TreePLESystem>
