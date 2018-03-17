@@ -35,7 +35,7 @@ public class TreePLESpringApplication extends SpringBootServletInitializer {
 	}
 
 	// TODO add a Bean to provide a registration manager
-	@Bean
+	@Bean	
 	public TreePLESystem regMan() {
 		return PersistenceXStream.initializeModelManager(PersistenceXStream.getFilename());
 	}
