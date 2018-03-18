@@ -1,11 +1,11 @@
 package ca.mcgill.ecse321.treeple.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import java.io.File;
+import java.sql.Date;
 import java.sql.Time;
 import java.util.Calendar;
-import java.sql.Date;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,6 +18,8 @@ import ca.mcgill.ecse321.treeple.model.Municipality;
 import ca.mcgill.ecse321.treeple.model.Resident;
 import ca.mcgill.ecse321.treeple.model.Transaction;
 import ca.mcgill.ecse321.treeple.model.Tree;
+import ca.mcgill.ecse321.treeple.model.Tree.TreeSpecies;
+import ca.mcgill.ecse321.treeple.model.Tree.TreeStatus;
 import ca.mcgill.ecse321.treeple.model.TreePLESystem;
 import ca.mcgill.ecse321.treeple.persistence.PersistenceXStream;
 
@@ -635,9 +637,284 @@ public class TestTreePLEService {
 		
 	}
 	
+	/*
+	 * Tests for CreateTree()
+	 */
 	
+	@Test
+	public void testCreateTree() {
+		assertEquals(0, treeSystem.getTrees().size());
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		TreeSpecies species = Tree.TreeSpecies.ALDER;
+		TreeStatus status = Tree.TreeStatus.HEALTHY;
+		int diameter = 5;
+		double lon = -69.739844;
+		double lat = 44.724340;
+		Municipality m = new Municipality("St-Michel");
+		treeSystem.addMunicipality(m);
+		
+		try {
+			treeService.CreateTree(species, status, diameter, lon, lat, m);
+		} catch (InvalidInputException e) {
+			fail();
+		}
+		
+		//Check model in memory
+		TreePLESystem treeSystemFromMemory = treeSystem;
+		checkResultTree(species, status, diameter, lon, lat, m, treeSystemFromMemory);		
+
+		//Check file contents
+		TreePLESystem treeSystemFromFile = (TreePLESystem) PersistenceXStream.loadFromXMLwithXStream();
+		checkResultTree(species, status, diameter, lon, lat, m, treeSystemFromFile);
+		
+	}
 	
+	@Test
+	public void testCreateTreeNullOrDefault() {
+		assertEquals(0, treeSystem.getTrees().size());
+		
+		TreeSpecies speciesNull = null;
+		TreeStatus statusNull = null;
+		int diameterDefault = 0;
+		double lonDefault = 0.0d;
+		double latDefault = 0.0d;
+		Municipality mNull = null;
+		
+		TreeSpecies species = Tree.TreeSpecies.ALDER;
+		TreeStatus status = Tree.TreeStatus.HEALTHY;
+		int diameter = 10;
+		double lon = -91.536719;
+		double lat = 35.040167;
+		Municipality m = new Municipality("Kirkland");
+		treeSystem.addMunicipality(m);
+		
+		String error = null;
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		try {
+			treeService.CreateTree(speciesNull, status, diameter, lon, lat, m);
+			treeService.CreateTree(species, statusNull, diameter, lon, lat, m);
+			treeService.CreateTree(species, status, diameterDefault, lon, lat, m);
+			treeService.CreateTree(species, status, diameter, lonDefault, lat, m);
+			treeService.CreateTree(species, status, diameter, lon, latDefault, m);
+			treeService.CreateTree(species, status, diameter, lon, lat, mNull);
+		} catch (InvalidInputException e) {
+			
+			error = e.getMessage();
+		}
+		
+		//Check error
+		assertEquals(error, "You did not provide necessary information for the tree");
+		
+		//Check no change in memory
+		assertEquals(0, treeSystem.getTrees().size());
+	}
 	
+	@Test
+	public void testCreateTreeInvalidLocation() {
+		assertEquals(0, treeSystem.getTrees().size());
+		
+		TreeSpecies species = Tree.TreeSpecies.ALDER;
+		TreeStatus status = Tree.TreeStatus.HEALTHY;
+		int diameter = 10;
+		double lon = 4325.536719;
+		double lat = 8672.040167;
+		Municipality m = new Municipality("St-Leonard");
+		treeSystem.addMunicipality(m);
+		
+		String error = null;
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		try {
+			treeService.CreateTree(species, status, diameter, lon, lat, m);
+		} catch (InvalidInputException e) {
+			
+			error = e.getMessage();
+		}
+		
+		//Check error
+		assertEquals(error, "Resident did not provide a valid location");
+		
+		//Check no change in memory
+		assertEquals(0, treeSystem.getTrees().size());
+	}
 	
+	@Test
+	public void testCreateTreeSmallDiameter() {
+		assertEquals(0, treeSystem.getTrees().size());
+		
+		TreeSpecies species = Tree.TreeSpecies.ALDER;
+		TreeStatus status = Tree.TreeStatus.HEALTHY;
+		int diameter = 4;
+		double lon = -77.122656;
+		double lat = 39.784315;
+		Municipality m = new Municipality("St-Laurent");
+		treeSystem.addMunicipality(m);
+		
+		String error = null;
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		try {
+			treeService.CreateTree(species, status, diameter, lon, lat, m);
+		} catch (InvalidInputException e) {
+			
+			error = e.getMessage();
+		}
+		
+		//Check error
+		assertEquals(error, "Trees' diameter should be above 5cm.");
+		
+		//Check no change in memory
+		assertEquals(0, treeSystem.getTrees().size());
+	}
+	
+	@Test
+	public void testCreateTreeExistingLocation() {
+		assertEquals(0, treeSystem.getTrees().size());
+		
+		TreeSpecies species = Tree.TreeSpecies.ALDER;
+		TreeStatus status = Tree.TreeStatus.HEALTHY;
+		int diameter = 10;
+		double lon = -92.942969;
+		double lat = 33.295003;
+		Location l = new Location(lon, lat);
+		treeSystem.addLocation(l);
+		Municipality m = new Municipality("Montreal-North");
+		treeSystem.addMunicipality(m);
+		
+		String error = null;
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		try {
+			treeService.CreateTree(species, status, diameter, lon, lat, m);
+		} catch (InvalidInputException e) {
+			
+			error = e.getMessage();
+		}
+		
+		//Check error
+		assertEquals(error, "This location is currently occupied");
+		
+		//Check no change in memory
+		assertEquals(0, treeSystem.getTrees().size());
+	}
+	
+	private void checkResultTree(TreeSpecies species, TreeStatus status, int diameter, double lon, double lat,
+			Municipality m, TreePLESystem treeSystem) {
+		assertEquals(1, treeSystem.getTrees().size());
+		assertEquals(species, treeSystem.getTree(0).getSpecies());
+		assertEquals(status, treeSystem.getTree(0).getStatus());
+		assertEquals(diameter, treeSystem.getTree(0).getDiameter());
+		assertEquals(1, treeSystem.getLocations().size());
+		assertEquals(lon, treeSystem.getTree(0).getTreeLocation().getLongitude(), 0.000001);
+		assertEquals(lat, treeSystem.getTree(0).getTreeLocation().getLatitude(), 0.000001);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+		assertEquals("St-Michel", treeSystem.getTree(0).getMunicipality().getName());
+	}
+	
+	/*
+	 * Tests for FindResidentByEmail()
+	 */
+	
+	@Test
+	public void testFindResidentByEmail() {
+		assertEquals(0, treeSystem.getLocations().size());
+		assertEquals(0, treeSystem.getResidents().size());
+		
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		String name = "Johnny";
+		String email = "johnny.orange@mail.com";
+		String password = "1234";
+		double lon = -124.935156;
+		double lat = 51.076821;
+		String salt = BCrypt.gensalt();
+		String aPasswordSalted = BCrypt.hashpw(password, salt);
+		Location l = new Location(lon, lat);
+		treeSystem.addLocation(l);
+		assertEquals(1, treeSystem.getLocations().size());
+		
+		Resident r = new Resident(name, email, salt, aPasswordSalted, l);
+		treeSystem.addResident(r);
+		assertEquals(1, treeSystem.getResidents().size());
+		
+		Resident r2 = null;
+		
+		try {
+			r2 = treeService.findResidentByEmail(email);
+		} catch (InvalidInputException e) {
+			fail();
+		}
+		
+		assertEquals(r2, r);
+		
+	}
+	
+	@Test
+	public void testFindResidentByEmailEmpty() {
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		Resident r = null;
+		String email = "";
+		String error = null;
+		
+		try {
+			r = treeService.findResidentByEmail(email);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Email cannot be null or empty.");
+		assertEquals(r, null);
+		
+	}
+	
+	@Test
+	public void testFindResidentByEmailNull() {
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		Resident r = null;
+		String email = null;
+		String error = null;
+		
+		try {
+			r = treeService.findResidentByEmail(email);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Email cannot be null or empty.");
+		assertEquals(r, null);
+		
+	}
+	
+	@Test
+	public void testFindResidentByEmailInvalid() {
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		Resident r = null;
+		String email = "Bob";
+		String error = null;
+		
+		try {
+			r = treeService.findResidentByEmail(email);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Email is invalid");
+		assertEquals(r, null);
+		
+	}
 
 }

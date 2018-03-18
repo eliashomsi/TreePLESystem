@@ -4,9 +4,9 @@
     <Resident id="4">
       <name>John</name>
       <email>john.apple@mail.com</email>
-      <salt>$2a$10$K7d9o19Zj6iNVqHuxrcmze</salt>
-      <passwordSalted>$2a$10$K7d9o19Zj6iNVqHuxrcmzeHEhzOco1vVPIX47naXfL2rkojyNkwKi</passwordSalted>
-      <id>3</id>
+      <salt>$2a$10$GhIMiUUegGRH4ljWzxHZwu</salt>
+      <passwordSalted>$2a$10$GhIMiUUegGRH4ljWzxHZwuyM/nnkITuJRNy0UdFQOlRvSl9wWZXTS</passwordSalted>
+      <id>4</id>
       <propertyLocation id="5">
         <longitude>1234.1234</longitude>
         <latitude>4321.4321</latitude>

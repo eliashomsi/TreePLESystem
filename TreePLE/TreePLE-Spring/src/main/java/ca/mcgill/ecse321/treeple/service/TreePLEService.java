@@ -60,18 +60,44 @@ public class TreePLEService {
 		String hash = hashPassword(password_plaintext, salt);
 		return hashedPassword.contentEquals(hash);
 	}
+	
+	private boolean isValidEmailAddress(String email) {
+		if (!email.contains("@")) {
+			return false;
+		}
+		String[] emailParts = email.split("@");
+		
+		if (emailParts.length != 2 || checkIfNullOrEmptyString(emailParts[0]) || checkIfNullOrEmptyString(emailParts[1])) {
+			return false;
+		}
+		else return true;
+	}
 
 	/** Business Logic **/
 	public Tree CreateTree(TreeSpecies species, TreeStatus status, int diameter, double lon, double lat, Municipality m)
 			throws InvalidInputException {
-		if (m == null)
-			throw new InvalidInputException("Municipality cannot be null");
+		if (species == null || status == null || diameter == 0 || lon == 0.0d || lat == 0.0d || m == null) {
+			throw new InvalidInputException("You did not provide necessary information for the tree");
+		}
+			
+		if(diameter < 5) {
+			throw new InvalidInputException("Trees' diameter should be above 5cm.");
+		}
+		
+		for (int i = 0; i < rm.getLocations().size(); i++) {
+			double lonTemp = rm.getLocation(i).getLongitude();
+			double latTemp = rm.getLocation(i).getLatitude();
+			if(lonTemp == lon && latTemp == lat) {
+				throw new InvalidInputException("This location is currently occupied");
+			}
+		}
 
 		Location l = new Location(lon, lat);
 		Tree t = new Tree(diameter, l, m);
 		t.setSpecies(species);
 		t.setStatus(status);
 		rm.addTree(t);
+		rm.addLocation(l);
 		PersistenceXStream.saveToXMLwithXStream(rm);
 		return t;
 	}
@@ -92,12 +118,20 @@ public class TreePLEService {
 		throw new InvalidInputException("Tree was not found");
 	}
 
-	public Resident findResidentByEmail(String email) {
+	public Resident findResidentByEmail(String email) throws InvalidInputException {
+		if(checkIfNullOrEmptyString(email)) {
+			throw new InvalidInputException("Email cannot be null or empty.");
+		}
+		
+		else if (!isValidEmailAddress(email)) {
+			throw new InvalidInputException("Email is invalid");
+		}
+		
 		for (Resident r : findAllResidents()) {
 			if (r.getEmail().contentEquals(email))
 				return r;
 		}
-		return null;
+		throw new InvalidInputException("Resident was not found");
 	}
 
 	public Token checkLogin(String residentEmail, String password_plaintext) throws InvalidInputException {
