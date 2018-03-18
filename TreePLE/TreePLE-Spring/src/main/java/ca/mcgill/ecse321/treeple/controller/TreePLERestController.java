@@ -143,7 +143,7 @@ public class TreePLERestController {
 
 		if (resident == null || tree == null)
 			throw new InvalidInputException("Tree or Resident were not found");
-		Transaction t = service.CreateTransaction(timesql, aDate, resident, tree, aChangedStatusTo);
+		Transaction t = service.createTransaction(timesql, aDate, resident, tree, aChangedStatusTo);
 		return convertToDto(t);
 	}
 

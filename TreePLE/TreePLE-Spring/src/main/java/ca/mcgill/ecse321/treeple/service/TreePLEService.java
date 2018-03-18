@@ -162,22 +162,38 @@ public class TreePLEService {
 		return r;
 	}
 
-	public Transaction CreateTransaction(Time aTime, Date aDate, Resident r, Tree t,
+	public Transaction createTransaction(Time aTime, Date aDate, Resident r, Tree t,
 			Transaction.TreeStatus aChangedStatusTo) throws InvalidInputException {
-		if (r == null || t == null)
+		if (r == null || t == null || aTime == null || aDate == null || aChangedStatusTo == null)
 			throw new InvalidInputException("Resident is null or Tree is null");
+		else if(!rm.getResidents().contains(r) || !rm.getTrees().contains(t)) {
+			throw new InvalidInputException("Resident or Tree does not exist!");
+		}
+		else {
+			Transaction temp = new Transaction(aTime, aDate, r, t);
+			temp.setChangedStatusTo(aChangedStatusTo);
 
-		Transaction temp = new Transaction(aTime, aDate, r, t);
-		temp.setChangedStatusTo(aChangedStatusTo);
+			// change the tree status
+			markTree(t, Tree.TreeStatus.values()[aChangedStatusTo.ordinal()]);
 
-		// change the tree status
-		Tree.TreeStatus newStatus = Tree.TreeStatus.values()[aChangedStatusTo.ordinal()];
-		t.setStatus(newStatus);
-
-		// add transaction
-		rm.addTransaction(temp);
-		PersistenceXStream.saveToXMLwithXStream(rm);
-		return temp;
+			// add transaction
+			rm.addTransaction(temp);
+			PersistenceXStream.saveToXMLwithXStream(rm);
+			return temp;
+		}
+	}
+	
+	public Tree markTree(Tree t, Tree.TreeStatus newStatus) throws InvalidInputException{
+		if(t == null || newStatus == null) {
+			throw new InvalidInputException("Tree or Tree status cannot be null!");
+		}
+		else if(!rm.getTrees().contains(t)) {
+			throw new InvalidInputException("Tree does not exist!");
+		}
+		else {
+			t.setStatus(newStatus);
+			return t;
+		}
 	}
 
 	public List<Tree> findAllTrees() {

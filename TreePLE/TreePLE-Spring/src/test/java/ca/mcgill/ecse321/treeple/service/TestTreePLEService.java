@@ -3,12 +3,21 @@ package ca.mcgill.ecse321.treeple.service;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.sql.Time;
+import java.util.Calendar;
+import java.sql.Date;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mindrot.jbcrypt.BCrypt;
 
+import ca.mcgill.ecse321.treeple.model.Location;
+import ca.mcgill.ecse321.treeple.model.Municipality;
+import ca.mcgill.ecse321.treeple.model.Resident;
+import ca.mcgill.ecse321.treeple.model.Transaction;
+import ca.mcgill.ecse321.treeple.model.Tree;
 import ca.mcgill.ecse321.treeple.model.TreePLESystem;
 import ca.mcgill.ecse321.treeple.persistence.PersistenceXStream;
 
@@ -18,7 +27,7 @@ public class TestTreePLEService {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		PersistenceXStream.initializeModelManager("output"+File.separator+"data.xml");
+		PersistenceXStream.initializeModelManager("data.xml");
 	}
 
 	@Before
@@ -328,6 +337,306 @@ public class TestTreePLEService {
 		assertEquals(0, treeSystem.getTrees().size());
 		assertEquals(0, treeSystem.getTransactions().size());
 	}
+	
+	/*
+	 * Tests for createTransaction()
+	 */
+	
+	@Test
+	public void testCreateTransaction() {
+		assertEquals(0, treeSystem.getTransactions().size());
+		Transaction.TreeStatus treeStatus  = Transaction.TreeStatus.PLANTED;
+		
+		
+		
+		double longitudeR = 1234.1234;
+		double latitudeR = 4321.4321;
+		
+		Location lr = new Location(longitudeR, latitudeR);
+		treeSystem.addLocation(lr);
+		assertEquals(1, treeSystem.getLocations().size());
+		
+		String name = "John";
+		String email = "john.apple@mail.com";
+		String password = "1234";
+		String type = "resident";
+		String salt = BCrypt.gensalt();
+		String passwordSalted = BCrypt.hashpw(password, salt);
+		
+		Resident r = new Resident(name, email,salt, passwordSalted, lr);
+		treeSystem.addResident(r);
+		assertEquals(1, treeSystem.getResidents().size());
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+		
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(2, treeSystem.getLocations().size());
+		
+		String muni = "Rosemont";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+		
+		int diam = 5;
+		Tree t = new Tree(diam, lt, m);
+		treeSystem.addTree(t);
+		assertEquals(1, treeSystem.getTrees().size());
+		
+		Calendar c = Calendar.getInstance();
+		c.set(2018, Calendar.MARCH, 16, 10, 30, 0);
+	    Date trDate = new Date(c.getTimeInMillis());
+		Time trTime = new Time(c.getTimeInMillis());
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		try {
+			treeService.createTransaction(trTime, trDate, r, t, treeStatus);
+		}
+		catch (InvalidInputException e) {
+			fail();
+		}
+		
+		checkResultTransaction(lr, r, lt, m, t,trDate,trTime,treeStatus, treeSystem);
+		// Check file for persistence
+		TreePLESystem treeS2 = (TreePLESystem) PersistenceXStream.loadFromXMLwithXStream();
+		checkResultTransaction(lr, r, lt, m, t,trDate,trTime,treeStatus, treeSystem);
+		treeS2.delete();
+		
+	}
+	
+	@Test
+	public void testCreateTransactionNull() {
+		assertEquals(0, treeSystem.getTransactions().size());
+		Transaction.TreeStatus treeStatus  = null;
+		
+		
+		
+	
+		Resident r = null;
+		assertEquals(0, treeSystem.getResidents().size());
+		
+		
+		Tree t = null;
+		assertEquals(0, treeSystem.getTrees().size());
+		
+		
+	    Date trDate = null;
+		Time trTime = null;
+		
+		String error = null;
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		try {
+			treeService.createTransaction(trTime, trDate, r, t, treeStatus);
+		}
+		catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Resident is null or Tree is null");
+		
+		//Check model 
+		assertEquals(0, treeSystem.getResidents().size());
+		assertEquals(0, treeSystem.getTrees().size());
+		assertEquals(0, treeSystem.getTransactions().size());
+
+
+	}
+	
+	@Test
+	public void testCreateTransactionResidentAndTreeDoNoExist() {
+		assertEquals(0, treeSystem.getTransactions().size());
+		Transaction.TreeStatus treeStatus  = Transaction.TreeStatus.PLANTED;
+		
+		
+		
+		double longitudeR = 1234.1234;
+		double latitudeR = 4321.4321;
+		
+		Location lr = new Location(longitudeR, latitudeR);
+		treeSystem.addLocation(lr);
+		assertEquals(1, treeSystem.getLocations().size());
+		
+		String name = "John";
+		String email = "john.apple@mail.com";
+		String password = "1234";
+		String type = "resident";
+		String salt = BCrypt.gensalt();
+		String passwordSalted = BCrypt.hashpw(password, salt);
+		
+		Resident r = new Resident(name, email,salt, passwordSalted, lr);
+		assertEquals(0, treeSystem.getResidents().size());
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+		
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(2, treeSystem.getLocations().size());
+		
+		String muni = "Saint-Laurent";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+		
+		int diam = 5;
+		Tree t = new Tree(diam, lt, m);
+		assertEquals(0, treeSystem.getTrees().size());
+		
+		Calendar c = Calendar.getInstance();
+		c.set(2018, Calendar.MARCH, 16, 10, 30, 0);
+	    Date trDate = new Date(c.getTimeInMillis());
+		Time trTime = new Time(c.getTimeInMillis());
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		String error = null;
+		try {
+			treeService.createTransaction(trTime, trDate, r, t, treeStatus);
+		}
+		catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Resident or Tree does not exist!");
+		
+		//Check model
+		assertEquals(0, treeSystem.getResidents().size());
+		assertEquals(0, treeSystem.getTrees().size());
+		assertEquals(0, treeSystem.getTransactions().size());
+		
+	}
+	
+	private void checkResultTransaction(Location lr, Resident r, Location lt, Municipality m, Tree t,Date d, Time time, 
+			Transaction.TreeStatus status, TreePLESystem treeS2) {
+		assertEquals(2, treeS2.getLocations().size());
+		assertEquals(lr, treeS2.getLocation(0));
+		assertEquals(lt, treeS2.getLocation(1));
+		assertEquals(1, treeS2.getResidents().size());
+		assertEquals(r, treeS2.getResident(0));
+		assertEquals(lr, treeS2.getResident(0).getPropertyLocation());
+		assertEquals(1, treeS2.getMunicipalities().size());
+		assertEquals(m, treeS2.getMunicipality(0));
+		assertEquals(1, treeS2.getTrees().size());
+		assertEquals(t, treeS2.getTree(0));
+		assertEquals(lt, treeS2.getTree(0).getTreeLocation());
+		assertEquals(1, treeS2.getTransactions().size());
+		assertEquals(treeS2.getResident(0), treeS2.getTransaction(0).getResident());
+		assertEquals(treeS2.getTree(0), treeS2.getTransaction(0).getTree());
+		assertEquals(d, treeS2.getTransaction(0).getDate());
+		assertEquals(time, treeS2.getTransaction(0).getTime());
+		assertEquals(status, treeS2.getTransaction(0).getChangedStatusTo());
+	}
+	
+	/*
+	 * Tests for markTree()
+	 */
+	
+	@Test
+	public void testMarkTree() {
+		assertEquals(0, treeSystem.getTrees().size());
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+		
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+		
+		String muni = "Villeray";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+		
+		int diam = 5;
+		Tree t = new Tree(diam, lt, m);
+		t.setStatus(Tree.TreeStatus.PLANTED);
+		treeSystem.addTree(t);
+		assertEquals(1, treeSystem.getTrees().size());
+		assertEquals(Tree.TreeStatus.PLANTED, treeSystem.getTree(0).getStatus());
+		
+		Tree.TreeStatus treeStatus = Tree.TreeStatus.CUTDOWN;
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		try {
+			treeService.markTree(t, treeStatus);
+		}
+		catch(InvalidInputException e) {
+			fail();
+		}
+		
+		assertEquals(treeStatus, treeSystem.getTree(0).getStatus());
+		
+		TreePLESystem treeS2 = (TreePLESystem) PersistenceXStream.loadFromXMLwithXStream();
+		
+		assertEquals(treeStatus, treeSystem.getTree(0).getStatus());
+
+		treeS2.delete();
+	}
+	
+	@Test
+	public void testMarkTreeNull() {
+		assertEquals(0, treeSystem.getTrees().size());
+		
+		
+		Tree t = null;
+		assertEquals(0, treeSystem.getTrees().size());
+
+		
+		Tree.TreeStatus treeStatus = null;
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		String error = null;
+		try {
+			treeService.markTree(t, treeStatus);
+		}
+		catch(InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("Tree or Tree status cannot be null!", error);
+		
+	}
+	
+	@Test
+	public void testMarkTreeNotFound() {
+		assertEquals(0, treeSystem.getTrees().size());
+		
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+		
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+		
+		String muni = "Ahuntsic";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+		
+		int diam = 5;
+		Tree t = new Tree(diam, lt, m);
+		t.setStatus(Tree.TreeStatus.PLANTED);
+		assertEquals(0, treeSystem.getTrees().size());
+		
+		Tree.TreeStatus treeStatus = Tree.TreeStatus.CUTDOWN;
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		String error = null;
+		try {
+			treeService.markTree(t, treeStatus);
+		}
+		catch(InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("Tree does not exist!", error);
+		
+	}
+	
+	
+	
 	
 	
 
