@@ -243,75 +243,127 @@
               <municipality reference="46"/>
               <transactions id="65"/>
             </Tree>
+            <Tree id="66">
+              <species>APPLE</species>
+              <status>HEALTHY</status>
+              <diameter>3</diameter>
+              <id>14</id>
+              <treeLocation id="67">
+                <longitude>-73.61922168718593</longitude>
+                <latitude>45.49223179455488</latitude>
+                <tree reference="66"/>
+              </treeLocation>
+              <municipality reference="46"/>
+              <transactions id="68"/>
+            </Tree>
+            <Tree id="69">
+              <species>APPLE</species>
+              <status>HEALTHY</status>
+              <diameter>3</diameter>
+              <id>15</id>
+              <treeLocation id="70">
+                <longitude>-73.73075866489671</longitude>
+                <latitude>45.611035453000206</latitude>
+                <tree reference="69"/>
+              </treeLocation>
+              <municipality reference="46"/>
+              <transactions id="71"/>
+            </Tree>
+            <Tree id="72">
+              <species>APPLE</species>
+              <status>HEALTHY</status>
+              <diameter>3</diameter>
+              <id>16</id>
+              <treeLocation id="73">
+                <longitude>-73.85435486678034</longitude>
+                <latitude>45.66624576467093</latitude>
+                <tree reference="72"/>
+              </treeLocation>
+              <municipality reference="46"/>
+              <transactions id="74"/>
+            </Tree>
+            <Tree id="75">
+              <species>ASH</species>
+              <status>CUTDOWN</status>
+              <diameter>3</diameter>
+              <id>17</id>
+              <treeLocation id="76">
+                <longitude>-76.1912841629237</longitude>
+                <latitude>46.376306753826846</latitude>
+                <tree reference="75"/>
+              </treeLocation>
+              <municipality reference="46"/>
+              <transactions id="77"/>
+            </Tree>
           </trees>
         </municipality>
-        <transactions id="66">
+        <transactions id="78">
           <Transaction reference="38"/>
         </transactions>
       </tree>
     </Transaction>
   </transactions>
-  <residents id="67">
+  <residents id="79">
     <environmentalscientist reference="6"/>
     <Resident reference="41"/>
-    <Resident id="68">
+    <Resident id="80">
       <name>asdfdasf</name>
       <email>asdfdsf@fasd.ca</email>
       <salt>$2a$10$gWGehXzRSMOXliF.sbfSse</salt>
       <passwordSalted>$2a$10$gWGehXzRSMOXliF.sbfSseT/EzzE4iCE8B.yLY/C6tnP2BYXZFNMC</passwordSalted>
       <id>3</id>
-      <propertyLocation id="69">
+      <propertyLocation id="81">
         <longitude>333.0</longitude>
         <latitude>33.0</latitude>
-        <resident reference="68"/>
+        <resident reference="80"/>
       </propertyLocation>
-      <transactions id="70"/>
+      <transactions id="82"/>
     </Resident>
-    <Resident id="71">
+    <Resident id="83">
       <name>oscar</name>
       <email>oscar@dads.ca</email>
       <salt>$2a$10$My6XOFU1Inyxtu8gd2go8e</salt>
       <passwordSalted>$2a$10$My6XOFU1Inyxtu8gd2go8eUvGFP5.RGW6gpzdosUGF6oqWY0Cs67C</passwordSalted>
       <id>4</id>
-      <propertyLocation id="72">
+      <propertyLocation id="84">
         <longitude>33.0</longitude>
         <latitude>33.0</latitude>
-        <resident reference="71"/>
+        <resident reference="83"/>
       </propertyLocation>
-      <transactions id="73"/>
+      <transactions id="85"/>
     </Resident>
-    <Resident id="74">
+    <Resident id="86">
       <name>test</name>
       <email>test</email>
       <salt>$2a$10$ELmKot9hjXRRQunCBR5xk.</salt>
       <passwordSalted>$2a$10$ELmKot9hjXRRQunCBR5xk./YUb/RWauMEdxa2cy0zI8ZzJl7Vh.lS</passwordSalted>
       <id>5</id>
-      <propertyLocation id="75">
+      <propertyLocation id="87">
         <longitude>3.0</longitude>
         <latitude>33.32</latitude>
-        <resident reference="74"/>
+        <resident reference="86"/>
       </propertyLocation>
-      <transactions id="76"/>
+      <transactions id="88"/>
     </Resident>
-    <Resident id="77">
+    <Resident id="89">
       <name>lol</name>
       <email>lol@lol.ca</email>
       <salt>$2a$10$TtcmHdtCYDQqQduIleVGgO</salt>
       <passwordSalted>$2a$10$TtcmHdtCYDQqQduIleVGgOpRPj/hJiVMIcVMUQ5.5BtbuHOnWM39y</passwordSalted>
       <id>6</id>
-      <propertyLocation id="78">
+      <propertyLocation id="90">
         <longitude>123.0</longitude>
         <latitude>13.0</latitude>
-        <resident reference="77"/>
+        <resident reference="89"/>
       </propertyLocation>
-      <transactions id="79"/>
+      <transactions id="91"/>
     </Resident>
   </residents>
-  <municipalities id="80">
+  <municipalities id="92">
     <Municipality reference="46"/>
     <Municipality reference="14"/>
   </municipalities>
-  <trees id="81">
+  <trees id="93">
     <Tree reference="12"/>
     <Tree reference="16"/>
     <Tree reference="19"/>
@@ -325,6 +377,10 @@
     <Tree reference="57"/>
     <Tree reference="60"/>
     <Tree reference="63"/>
+    <Tree reference="66"/>
+    <Tree reference="69"/>
+    <Tree reference="72"/>
+    <Tree reference="75"/>
   </trees>
-  <locations id="82"/>
+  <locations id="94"/>
 </ca.mcgill.ecse321.treeple.model.TreePLESystem>

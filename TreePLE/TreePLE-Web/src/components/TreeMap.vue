@@ -9,7 +9,7 @@
     <gmap-map 
     id="mymap"
     :center="center"
-    :zoom="11"
+    :zoom="11"      
     @rightclick="modalPopUp"
     >
 
@@ -132,27 +132,7 @@ export default {
       this.errorTree = e
     })
 
-    AXIOS.get('/municipalities')
-    .then(response => {
-      // JSON responses are automatically parsed.
-      this.municipalities = response.data
-    })
-    .catch(e => {
-      this.errorTree = e
-    })
-
-    //  Initializing trees from backend
-    AXIOS.get(`/trees`)
-      .then(response => {
-        // JSON responses are automatically parsed.
-        this.trees = response.data
-        for (var i = 0; i < this.trees.length; i++) {
-          this.positions.push({ position: {lat: parseFloat(this.trees[i].treeLocation.lat), lng: parseFloat(this.trees[i].treeLocation.lng)}, icon: {url: 'http://maps.google.com/mapfiles/kml/shapes/parks.png', size: {width: 46, height: 46, f: 'px', b: 'px'}, scaledSize: {width: 23, height: 23, f: 'px', b: 'px'}}, treeData: this.trees[i], isClicked: false })
-        }
-      })
-      .catch(e => {
-        this.errorTree = e
-      })
+    this.updateView()
   },
   methods: {
     modalPopUp: function (e) {
@@ -172,10 +152,37 @@ export default {
       })
       .then(response => {
         // JSON responses are automatically parsed.
+        var modal = document.getElementById('myModal')
+        modal.style.display = 'none'
+        this.updateView()
       })
       .catch(e => {
         this.errorTree = e
       })
+    },
+    updateView: function () {
+      AXIOS.get('/municipalities')
+      .then(response => {
+        // JSON responses are automatically parsed.
+        this.municipalities = response.data
+      })
+      .catch(e => {
+        this.errorTree = e
+      })
+
+      //  Initializing trees from backend
+      AXIOS.get(`/trees`)
+      .then(response => {
+        // JSON responses are automatically parsed.
+        this.trees = response.data
+        for (var i = 0; i < this.trees.length; i++) {
+          this.positions.push({ position: {lat: parseFloat(this.trees[i].treeLocation.lat), lng: parseFloat(this.trees[i].treeLocation.lng)}, icon: {url: 'http://maps.google.com/mapfiles/kml/shapes/parks.png', size: {width: 46, height: 46, f: 'px', b: 'px'}, scaledSize: {width: 23, height: 23, f: 'px', b: 'px'}}, treeData: this.trees[i], isClicked: false })
+        }
+      })
+    .catch(e => {
+      this.errorTree = e
+    })
+      this.$forceUpdate()
     }
   }
 }
