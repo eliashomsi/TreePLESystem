@@ -1,7 +1,42 @@
 <ca.mcgill.ecse321.treeple.model.TreePLESystem id="1">
   <transactions id="2"/>
   <residents id="3"/>
-  <municipalities id="4"/>
-  <trees id="5"/>
-  <locations id="6"/>
+  <municipalities id="4">
+    <Municipality id="5">
+      <name>aef</name>
+      <trees id="6">
+        <Tree id="7">
+          <species>MAPLE</species>
+          <status>PLANTED</status>
+          <diameter>3</diameter>
+          <id>1</id>
+          <treeLocation id="8">
+            <longitude>45.3</longitude>
+            <latitude>-73.3</latitude>
+            <tree reference="7"/>
+          </treeLocation>
+          <municipality reference="5"/>
+          <transactions id="9"/>
+        </Tree>
+        <Tree id="10">
+          <species>MAPLE</species>
+          <status>PLANTED</status>
+          <diameter>3</diameter>
+          <id>2</id>
+          <treeLocation id="11">
+            <longitude>-73.3</longitude>
+            <latitude>45.3</latitude>
+            <tree reference="10"/>
+          </treeLocation>
+          <municipality reference="5"/>
+          <transactions id="12"/>
+        </Tree>
+      </trees>
+    </Municipality>
+  </municipalities>
+  <trees id="13">
+    <Tree reference="7"/>
+    <Tree reference="10"/>
+  </trees>
+  <locations id="14"/>
 </ca.mcgill.ecse321.treeple.model.TreePLESystem>

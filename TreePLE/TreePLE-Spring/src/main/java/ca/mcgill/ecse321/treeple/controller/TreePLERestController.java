@@ -254,7 +254,7 @@ public class TreePLERestController {
 	private LocationDto convertToDto(Location e) {
 		// In simple cases, the mapper service is convenient
 		LocationDto t = modelMapper.map(e, LocationDto.class);
-		t.setLon(e.getLongitude());
+		t.setLng(e.getLongitude());
 		t.setLat(e.getLatitude());
 		return t;
 	}
@@ -279,7 +279,7 @@ public class TreePLERestController {
 		td.setId(t.getId());
 		return td;
 	}
-
+	
 	private TransactionDto convertToDto(Transaction tt) {
 		TransactionDto td = modelMapper.map(tt, TransactionDto.class);
 		td.setResident(convertToDto(tt.getResident()));

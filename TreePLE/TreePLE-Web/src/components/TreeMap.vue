@@ -11,11 +11,27 @@
 	      <span v-if="errorTree" style="color:red">Error: {{errorTree}} </span>
 	    </p>
 
-	    <div id="myMap"></div>
-  	</div>
+	    <gmap-map 
+        :center="center"
+        :zoom="11"
+        style="width: 500px; height: 500px"
+      >
+       <gmap-marker
+          v-for="(m, index) in positions"
+          :key="index"
+          :position="m"
+          :clickable="true"
+          :draggable="true"
+          @click="center=m"
+        ></gmap-marker>
+
+      
+    </gmap-map>
+  </div>
 </template>
 
 <script>
+// init script for services
 import axios from 'axios'
 var config = require('../../config')
 
@@ -27,6 +43,17 @@ var AXIOS = axios.create({
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
 })
 
+// import google maps
+import * as VueGoogleMaps from 'vue2-google-maps'
+import Vue from 'vue'
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyBuXIUEEYNasB92TxFn0lB2eWZtEJzXSs4',
+    v: '3'
+  }
+})
+
+//  export module
 export default {
   name: 'treeple',
   data () {
@@ -34,15 +61,21 @@ export default {
       trees: [],
       newTree: '',
       errorTree: '',
-      response: []
+      response: [],
+      tempPosition: {lat: 45.5, lng: -73.5},
+      center: {lat: 45.5, lng: -73.5},
+      positions: []
     }
   },
   created: function () {
-    // Initializing trees from backend
+    //  Initializing trees from backend
     AXIOS.get(`/trees`)
       .then(response => {
         // JSON responses are automatically parsed.
         this.trees = response.data
+        for (var i = 0; i < this.trees.length; i++) {
+          this.positions.push({lat: parseFloat(this.trees[i].treeLocation.lat), lng: parseFloat(this.trees[i].treeLocation.lng)})
+        }
       })
       .catch(e => {
         this.errorTree = e
