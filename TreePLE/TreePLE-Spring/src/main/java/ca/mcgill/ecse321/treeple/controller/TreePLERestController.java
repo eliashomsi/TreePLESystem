@@ -43,7 +43,7 @@ public class TreePLERestController {
 	 */
 	@RequestMapping("/")
 	public String index() {
-		return "application root.\n";
+		return "application root please use the front end to contact the controller.\n";
 	}
 
 	@GetMapping(value = { "/trees", "/trees/" })
@@ -80,6 +80,26 @@ public class TreePLERestController {
 			transactions.add(convertToDto(t));
 		}
 		return transactions;
+	}
+
+	@GetMapping(value = { "/treestatuslist", "/treestatuslist/" })
+	public List<String> treestatuslist() {
+		List<String> res = new ArrayList<String>();
+		Object[] possibleValues = Tree.TreeStatus.values();
+		for (Object option : possibleValues) {
+			res.add(option.toString());
+		}
+		return res;
+	}
+
+	@GetMapping(value = { "/treespecieslist", "/treespecieslist/" })
+	public List<String> treeSpeciesList() {
+		List<String> res = new ArrayList<String>();
+		Object[] possibleValues = Tree.TreeSpecies.values();
+		for (Object option : possibleValues) {
+			res.add(option.toString());
+		}
+		return res;
 	}
 
 	/**
@@ -131,11 +151,12 @@ public class TreePLERestController {
 	@PostMapping(value = { "/transactions/", "/transactions" })
 	public TransactionDto CreateTransaction(
 			@RequestParam(name = "time") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime aTime,
-			@RequestParam(name = "date") Date aDate, @RequestParam(name = "resident") String residentName,
+			@RequestParam(name = "date") Date aDate, @RequestParam(name = "resident") String residentEmail,
 			@RequestParam(name = "tree") int treeid,
 			@RequestParam(name = "status") Transaction.TreeStatus aChangedStatusTo) throws InvalidInputException {
 
-		Resident resident = service.findResidentByName(residentName);
+		Resident resident = service.findResidentByEmail(residentEmail);
+
 		Tree tree = service.findTreeById(treeid);
 
 		@SuppressWarnings("deprecation")
@@ -146,83 +167,6 @@ public class TreePLERestController {
 		Transaction t = service.createTransaction(timesql, aDate, resident, tree, aChangedStatusTo);
 		return convertToDto(t);
 	}
-
-	//
-	// @GetMapping(value = { "/events/{name}", "/events/{name}/" })
-	// public EventDto showEvent(@PathVariable("name") String name) throws
-	// InvalidInputException {
-	// Event event = service.findEvent(name);
-	// return convertToDto(event);
-	// }
-	//
-	// @GetMapping(value = { "/events", "/events/" })
-	// public List<EventDto> findAllEvents() throws InvalidInputException {
-	// List<EventDto> events = new ArrayList<>();
-	// for (Event e : service.findAllEvents()) {
-	// events.add(convertToDto(e));
-	// }
-	// return events;
-	// }
-	//
-	// @GetMapping(value = { "/participants", "/participants/" })
-	// public List<ParticipantDto> findAllParticipants() {
-	// List<ParticipantDto> participants = new ArrayList<>();
-	// for (Participant participant : service.findAllParticipants()) {
-	// participants.add(convertToDto(participant));
-	// }
-	// return participants;
-	// }
-	//
-	//
-	// @GetMapping(value = { "/registrations/participant/{name}",
-	// "/registrations/participant/{name}/" })
-	// public List<EventDto> getEventsOfParticipant(@PathVariable("name")
-	// ParticipantDto pDto) {
-	// Participant p = convertToDomainObject(pDto);
-	// return createEventDtosForParticipant(p);
-	// }
-	//
-	//
-	//
-	// /**
-	// * CREATE
-	// */
-	//
-	// @PostMapping(value = { "/participants/{name}", "/participants/{name}/" })
-	// public ParticipantDto createParticipant(@PathVariable("name") String name)
-	// throws InvalidInputException {
-	// Participant participant = service.createParticipant(name);
-	// return convertToDto(participant);
-	// }
-	//
-	// @PostMapping(value = { "/events/{name}", "/events/{name}/" })
-	// public EventDto createEvent(@PathVariable("name") String name, @RequestParam
-	// Date date,
-	// @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern =
-	// "HH:mm") LocalTime startTime,
-	// @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern =
-	// "HH:mm") LocalTime endTime)
-	// throws InvalidInputException {
-	// @SuppressWarnings("deprecation")
-	// Time startTimeSql = new Time(startTime.getHour(), startTime.getMinute(), 0);
-	// @SuppressWarnings("deprecation")
-	// Time endTimeSql = new Time(endTime.getHour(), endTime.getMinute(), 0);
-	// Event event = service.createEvent(name, date, startTimeSql, endTimeSql);
-	// return convertToDto(event);
-	// }
-	//
-	// @PostMapping(value = { "/register", "/register/" })
-	// public RegistrationDto registerParticipantForEvent(@RequestParam(name =
-	// "participant") ParticipantDto pDto,
-	// @RequestParam(name = "event") EventDto eDto) throws InvalidInputException {
-	// // In this example application, we assumed that participants and events are
-	// // identified by their names
-	// Participant p = service.findParticipant(pDto.getName());
-	// Event e = service.findEvent(eDto.getName());
-	// Registration r = service.register(p, e);
-	// return convertToDto(r, p, e);
-	// }
-	//
 
 	/** Conversion methods (not part of the API) **/
 	private Municipality convertToDomainObject(MunicipalityDto mDto) {
@@ -254,7 +198,7 @@ public class TreePLERestController {
 	private LocationDto convertToDto(Location e) {
 		// In simple cases, the mapper service is convenient
 		LocationDto t = modelMapper.map(e, LocationDto.class);
-		t.setLon(e.getLongitude());
+		t.setLng(e.getLongitude());
 		t.setLat(e.getLatitude());
 		return t;
 	}
@@ -284,6 +228,7 @@ public class TreePLERestController {
 		TransactionDto td = modelMapper.map(tt, TransactionDto.class);
 		td.setResident(convertToDto(tt.getResident()));
 		td.setTree(convertToDto(tt.getTree()));
+		td.setStatus(tt.getChangedStatusTo());
 		return td;
 	}
 

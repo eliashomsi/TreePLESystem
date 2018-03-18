@@ -37,6 +37,7 @@ public class PersistenceXStream {
 		File file = new File(fileName);
 		if (file.exists()) {
 			rm = (TreePLESystem) loadFromXMLwithXStream();
+			rm.reinitialize(); //update ids and stuff
 		} else {
 			try {
 				file.createNewFile();

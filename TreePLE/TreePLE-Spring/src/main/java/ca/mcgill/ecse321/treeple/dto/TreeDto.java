@@ -2,6 +2,11 @@ package ca.mcgill.ecse321.treeple.dto;
 
 public class TreeDto {
 	private int id;
+	private String species;
+	private String status;
+	private int diameter;
+	private MunicipalityDto municipality;
+	private LocationDto treeLocation;
 
 	public TreeDto(int id, String species, String status, int diameter, MunicipalityDto municipality,
 			LocationDto treeLocation) {
@@ -22,12 +27,7 @@ public class TreeDto {
 		this.id = id;
 	}
 
-	private String species;
-	private String status;
-	private int diameter;
-	private MunicipalityDto municipality;
-	private LocationDto treeLocation;
-
+	
 	public String getSpecies() {
 		return species;
 	}

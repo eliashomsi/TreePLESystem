@@ -3,11 +3,22 @@ package ca.mcgill.ecse321.treeple.dto;
 import java.sql.Date;
 import java.sql.Time;
 
+import ca.mcgill.ecse321.treeple.model.Tree.TreeStatus;
+
 public class TransactionDto {
 	Time time;
 	Date date;
 	ResidentDto resident;
 	TreeDto tree;
+	ca.mcgill.ecse321.treeple.model.Transaction.TreeStatus status;
+	
+	public ca.mcgill.ecse321.treeple.model.Transaction.TreeStatus getStatus() {
+		return status;
+	}
+	
+	public void setStatus(ca.mcgill.ecse321.treeple.model.Transaction.TreeStatus treeStatus) {
+		this.status = treeStatus;
+	}
 
 	public Time getTime() {
 		return time;

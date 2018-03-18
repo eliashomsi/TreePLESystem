@@ -4,7 +4,7 @@
 package ca.mcgill.ecse321.treeple.model;
 import java.util.*;
 
-// line 107 "../../../../../TreePLE.ump"
+// line 110 "../../../../../TreePLE.ump"
 public class EnvironmentalScientist extends Resident
 {
 

@@ -1,15 +1,15 @@
 package ca.mcgill.ecse321.treeple.dto;
 
 public class LocationDto {
-	private double lon;
+	private double lng;
 	private double lat;
 
-	public double getLon() {
-		return lon;
+	public double getLng() {
+		return lng;
 	}
 
-	public void setLon(double lon) {
-		this.lon = lon;
+	public void setLng(double lng) {
+		this.lng = lng;
 	}
 
 	public double getLat() {
@@ -20,9 +20,9 @@ public class LocationDto {
 		this.lat = lat;
 	}
 
-	public LocationDto(double lon, double lat) {
+	public LocationDto(double lng, double lat) {
 		super();
-		this.lon = lon;
+		this.lng = lng;
 		this.lat = lat;
 	}
 

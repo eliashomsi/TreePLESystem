@@ -1,4 +1,7 @@
 namespace ca.mcgill.ecse321.treeple.model;
+
+use TreePLEPersistence.ump;
+
 class TreePLESystem {
   0..1 -> * Transaction transactions;
   0..1 -> * Resident residents;
