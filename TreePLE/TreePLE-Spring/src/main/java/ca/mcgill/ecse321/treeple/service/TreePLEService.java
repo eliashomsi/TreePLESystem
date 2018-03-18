@@ -50,6 +50,17 @@ public class TreePLEService {
 	private boolean checkIfNullOrEmptyString(String s) {
 		return s == null || s.trim().contentEquals("");
 	}
+	
+	private boolean checkIfLocationValid(double lon, double lat) {
+		boolean isValid = true;
+		if(lon < -180.000000 || lon > 180.000000 ) {
+			isValid = false;
+		}
+		if(lat < -90.000000 || lat > 90.000000) {
+			isValid = false;
+		}
+		return isValid;
+	}
 
 	private String hashPassword(String password_plaintext, String salt) {
 		String hashed_password = BCrypt.hashpw(password_plaintext, salt);
@@ -172,7 +183,9 @@ public class TreePLEService {
 			throws InvalidInputException {
 		if (checkIfNullOrEmptyString(aName) || checkIfNullOrEmptyString(aEmail) || checkIfNullOrEmptyString(aPassword))
 			throw new InvalidInputException("Resident did not provide necessary information");
-
+		if (!(checkIfLocationValid(lon, lat))) {
+			throw new InvalidInputException("Resident did not provide a valid location");
+		}
 		String aSalt = BCrypt.gensalt();
 		String aPasswordSalted = hashPassword(aPassword, aSalt);
 
@@ -192,6 +205,7 @@ public class TreePLEService {
 			throw new InvalidInputException("Type is invalid");
 
 		rm.addResident(r);
+		rm.addLocation(aPropertyLocation);
 		PersistenceXStream.saveToXMLwithXStream(rm);
 		return r;
 	}

@@ -1,21 +1,30 @@
 <ca.mcgill.ecse321.treeple.model.TreePLESystem id="1">
   <transactions id="2"/>
-  <residents id="3">
-    <Resident id="4">
-      <name>John</name>
-      <email>john.apple@mail.com</email>
-      <salt>$2a$10$GhIMiUUegGRH4ljWzxHZwu</salt>
-      <passwordSalted>$2a$10$GhIMiUUegGRH4ljWzxHZwuyM/nnkITuJRNy0UdFQOlRvSl9wWZXTS</passwordSalted>
-      <id>4</id>
-      <propertyLocation id="5">
-        <longitude>1234.1234</longitude>
-        <latitude>4321.4321</latitude>
-        <resident reference="4"/>
-      </propertyLocation>
-      <transactions id="6"/>
-    </Resident>
-  </residents>
-  <municipalities id="7"/>
-  <trees id="8"/>
-  <locations id="9"/>
+  <residents id="3"/>
+  <municipalities id="4">
+    <Municipality id="5">
+      <name>St-Leonard</name>
+      <trees id="6">
+        <Tree id="7">
+          <species>ALDER</species>
+          <status>HEALTHY</status>
+          <diameter>10</diameter>
+          <id>7</id>
+          <treeLocation id="8">
+            <longitude>4325.536719</longitude>
+            <latitude>8672.040167</latitude>
+            <tree reference="7"/>
+          </treeLocation>
+          <municipality reference="5"/>
+          <transactions id="9"/>
+        </Tree>
+      </trees>
+    </Municipality>
+  </municipalities>
+  <trees id="10">
+    <Tree reference="7"/>
+  </trees>
+  <locations id="11">
+    <location reference="8"/>
+  </locations>
 </ca.mcgill.ecse321.treeple.model.TreePLESystem>
