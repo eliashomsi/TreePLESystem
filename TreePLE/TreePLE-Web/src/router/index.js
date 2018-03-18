@@ -5,14 +5,25 @@ import Municipalities from '@/components/Municipalities'
 import Trees from '@/components/Trees'
 import Residents from '@/components/Residents'
 import Transactions from '@/components/Transactions'
+import Index from '@/components/Index'
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/map',
       name: 'TreeMap',
       component: Map
+    },
+    {
+      path: '/map/:resident',
+      name: 'TreeMapResident',
+      component: Map
+    },
+    {
+      path: '/',
+      name: 'Index',
+      component: Index
     },
     {
       path: '/municipalities',

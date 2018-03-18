@@ -151,11 +151,12 @@ public class TreePLERestController {
 	@PostMapping(value = { "/transactions/", "/transactions" })
 	public TransactionDto CreateTransaction(
 			@RequestParam(name = "time") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime aTime,
-			@RequestParam(name = "date") Date aDate, @RequestParam(name = "resident") String residentName,
+			@RequestParam(name = "date") Date aDate, @RequestParam(name = "resident") String residentEmail,
 			@RequestParam(name = "tree") int treeid,
 			@RequestParam(name = "status") Transaction.TreeStatus aChangedStatusTo) throws InvalidInputException {
 
-		Resident resident = service.findResidentByName(residentName);
+		Resident resident = service.findResidentByEmail(residentEmail);
+
 		Tree tree = service.findTreeById(treeid);
 
 		@SuppressWarnings("deprecation")

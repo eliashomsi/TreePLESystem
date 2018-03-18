@@ -83,7 +83,8 @@ public class TreePLEService {
 
 		throw new InvalidInputException("Resident was not found");
 	}
-
+	
+	
 	public Tree findTreeById(int id) throws InvalidInputException {
 		for (Tree t : rm.getTrees())
 			if (t.getId() == id)
@@ -92,19 +93,17 @@ public class TreePLEService {
 		throw new InvalidInputException("Tree was not found");
 	}
 
-	public Resident findResidentByEmail(String email) {
+	public Resident findResidentByEmail(String email) throws InvalidInputException {
 		for (Resident r : findAllResidents()) {
 			if (r.getEmail().contentEquals(email))
 				return r;
 		}
-		return null;
+		throw new InvalidInputException("Resident was not found");
 	}
 
 	public Token checkLogin(String residentEmail, String password_plaintext) throws InvalidInputException {
 		Resident r = findResidentByEmail(residentEmail);
-		if (r == null)
-			throw new InvalidInputException("Resident was not found to login");
-
+		
 		if (checkPassword(password_plaintext, r.getSalt(), r.getPasswordSalted())) {
 			Token t = genToken(residentEmail);
 			tokens.add(t);

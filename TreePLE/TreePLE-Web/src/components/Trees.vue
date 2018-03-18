@@ -47,8 +47,8 @@
       </ol>
     </div>
 
+    <div class="alert alert-secondary" role="alert" v-if="errorTree" style="color:red">Error: {{errorTree.response.data.message}}  </div>
 
-    <span v-if="errorTree" style="color:red">Error: {{errorTree}}  </span>
   </p>
 </div>
 </template>

@@ -14,7 +14,7 @@
       <label> resident </label>
       <select v-model="newTransaction.resident">
         <option v-for="resident in residents">
-          {{resident.name}}
+          {{resident.email}}
         </option>
       </select>
 
@@ -49,8 +49,8 @@
       </ol>
     </div>
 
+    <div class="alert alert-secondary" role="alert" v-if="errorTransaction" style="color:red">Error: {{errorTransaction.response.data.message}}  </div>
 
-    <span v-if="errorTransaction" style="color:red">Error: {{errorTransaction}}  </span>
   </p>
 </div>
 </template>
@@ -103,6 +103,7 @@ export default {
       .then(response => {
         // JSON responses are automatically parsed.
         this.updateView()
+        this.errorTransaction = ''
       })
       .catch(e => {
         this.errorTransaction = e

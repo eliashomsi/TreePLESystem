@@ -38,13 +38,13 @@
           <p> name: {{resident.name}} </p>
           <p> email: {{resident.email}} </p>
           <p> type: {{resident.type}} </p>
-          <p> residentLocation: lng: {{resident.propertyLocation.lon}}  lat:{{resident.propertyLocation.lat}} </p>
+          <p> residentLocation: lng: {{resident.propertyLocation.lng}}  lat:{{resident.propertyLocation.lat}} </p>
         </li>
       </ol>
     </div>
 
+    <div class="alert alert-secondary" role="alert" v-if="errorResident" style="color:red">Error: {{errorResident.response.data.message}}  </div>
 
-    <span v-if="errorResident" style="color:red">Error: {{errorResident}}  </span>
   </p>
 </div>
 </template>
@@ -75,16 +75,6 @@ export default {
   },
   created: function () {
     this.updateView()
-
-    //  getting constant info
-    AXIOS.get('/treestatuslist')
-    .then(response => {
-      // JSON responses are automatically parsed.
-      this.treestatuslist = response.data
-    })
-    .catch(e => {
-      this.errorTree = e
-    })
   },
   methods: {
     createResident: function (newResident) {

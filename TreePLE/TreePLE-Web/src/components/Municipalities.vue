@@ -14,9 +14,9 @@
       name:  <input placeholder="Municipality Name" v-model="newMunicipality" type=text>
       <button @click="createMunicipality(newMunicipality)">Create</button>
     </div>
-    <p>
-      <span v-if="errorMunicipality" style="color:red">Error: {{errorMunicipality}}  </span>
-    </p>
+
+    <div class="alert alert-secondary" role="alert" v-if="errorMunicipality" style="color:red">Error: {{errorMunicipality.response.data.message}}  </div>
+    
   </div>
 </template>
 
