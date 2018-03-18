@@ -916,5 +916,84 @@ public class TestTreePLEService {
 		assertEquals(r, null);
 		
 	}
+	
+	/*
+	 * Tests for findTreeById()
+	 */
+
+	@Test 
+	public void testFindTreeById() {
+		assertEquals(0, treeSystem.getTrees().size());
+		
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+		
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+		
+		String muni = "Saint-Michel";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+		
+		int diam = 5;
+		Tree t1 = new Tree(diam, lt, m);
+		treeSystem.addTree(t1);
+		assertEquals(1, treeSystem.getTrees().size());
+		assertEquals(1, treeSystem.getTree(0).getId());
+		
+		diam = 6;
+		lt = new Location(latitudeT, longitudeT);
+		Tree t2 = new Tree(diam, lt, m);
+		treeSystem.addTree(t2);
+		assertEquals(2, treeSystem.getTrees().size());
+		assertEquals(2, treeSystem.getTree(1).getId());
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		try {
+			assertEquals(t1, treeService.findTreeById(1));
+			assertEquals(t2, treeService.findTreeById(2));
+		}
+		catch(InvalidInputException e) {
+			fail();
+		}
+		
+	}
+	
+	@Test 
+	public void testFindTreeByIdNotFound() {
+		assertEquals(0, treeSystem.getTrees().size());
+		
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+		
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+		
+		String muni = "Parc-Extension";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+		
+		int diam = 5;
+		Tree t1 = new Tree(diam, lt, m);
+		assertEquals(0, treeSystem.getTrees().size());
+
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		String error = null;
+		try {
+			assertEquals(t1, treeService.findTreeById(1));
+		}
+		catch(InvalidInputException e) {
+			error = e.getMessage();
+		}
+	
+		assertEquals(error, "Tree was not found");
+	}
 
 }
