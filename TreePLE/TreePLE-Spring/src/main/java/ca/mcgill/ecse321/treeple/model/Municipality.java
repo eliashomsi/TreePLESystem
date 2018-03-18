@@ -4,7 +4,8 @@
 package ca.mcgill.ecse321.treeple.model;
 import java.util.*;
 
-// line 20 "../../../../../TreePLE.ump"
+// line 33 "../../../../../TreePLEPersistence.ump"
+// line 23 "../../../../../TreePLE.ump"
 public class Municipality
 {
 
@@ -182,6 +183,14 @@ public class Municipality
       Tree aTree = trees.get(i - 1);
       aTree.delete();
     }
+  }
+
+  // line 35 "../../../../../TreePLEPersistence.ump"
+   public static  void reinitializeUniqueName(List<Municipality> municipalities){
+    municipalitysByName = new HashMap<String, Municipality>();
+		for (Municipality municipality : municipalities) {
+			municipalitysByName.put(municipality.getName(), municipality); 
+		}
   }
 
 

@@ -4,7 +4,8 @@
 package ca.mcgill.ecse321.treeple.model;
 import java.util.*;
 
-// line 2 "../../../../../TreePLE.ump"
+// line 3 "../../../../../TreePLEPersistence.ump"
+// line 5 "../../../../../TreePLE.ump"
 public class TreePLESystem
 {
 
@@ -478,6 +479,13 @@ public class TreePLESystem
     municipalities.clear();
     trees.clear();
     locations.clear();
+  }
+
+  // line 5 "../../../../../TreePLEPersistence.ump"
+   public void reinitialize(){
+    Resident.reinitializeAutouniqueNumber(this.getResidents());
+	 	Tree.reinitializeAutouniqueNumber(this.getTrees()); 
+	 	Municipality.reinitializeUniqueName(this.getMunicipalities());
   }
 
 }

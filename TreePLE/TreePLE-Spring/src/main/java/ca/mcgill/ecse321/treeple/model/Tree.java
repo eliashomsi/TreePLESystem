@@ -6,7 +6,8 @@ import java.util.*;
 import java.sql.Time;
 import java.sql.Date;
 
-// line 10 "../../../../../TreePLE.ump"
+// line 22 "../../../../../TreePLEPersistence.ump"
+// line 13 "../../../../../TreePLE.ump"
 public class Tree
 {
 
@@ -284,6 +285,16 @@ public class Tree
       Transaction aTransaction = transactions.get(i - 1);
       aTransaction.delete();
     }
+  }
+
+  // line 24 "../../../../../TreePLEPersistence.ump"
+   public static  void reinitializeAutouniqueNumber(List<Tree> trees){
+    nextId = 0;
+		for (Tree tree : trees) {
+		if (tree.getId() > nextId) {
+			nextId = tree.getId(); }
+		}
+		nextId++;
   }
 
 

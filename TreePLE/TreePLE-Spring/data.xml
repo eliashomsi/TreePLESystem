@@ -1,42 +1,168 @@
 <ca.mcgill.ecse321.treeple.model.TreePLESystem id="1">
-  <transactions id="2"/>
-  <residents id="3"/>
-  <municipalities id="4">
-    <Municipality id="5">
-      <name>aef</name>
-      <trees id="6">
-        <Tree id="7">
-          <species>MAPLE</species>
-          <status>PLANTED</status>
-          <diameter>3</diameter>
-          <id>1</id>
-          <treeLocation id="8">
-            <longitude>45.3</longitude>
-            <latitude>-73.3</latitude>
-            <tree reference="7"/>
-          </treeLocation>
-          <municipality reference="5"/>
-          <transactions id="9"/>
-        </Tree>
-        <Tree id="10">
-          <species>MAPLE</species>
-          <status>PLANTED</status>
-          <diameter>3</diameter>
-          <id>2</id>
-          <treeLocation id="11">
-            <longitude>-73.3</longitude>
-            <latitude>45.3</latitude>
-            <tree reference="10"/>
-          </treeLocation>
-          <municipality reference="5"/>
-          <transactions id="12"/>
-        </Tree>
-      </trees>
+  <transactions id="2">
+    <Transaction id="3">
+      <time id="4">11:32:00</time>
+      <date id="5">2018-11-11</date>
+      <changedStatusTo>DISEASED</changedStatusTo>
+      <resident class="environmentalscientist" id="6">
+        <name>elias2</name>
+        <email>hehe@heeh.ca</email>
+        <salt>$2a$10$C9.DtW5HotYR5KwAmj2Yx.</salt>
+        <passwordSalted>$2a$10$C9.DtW5HotYR5KwAmj2Yx.OyQvFhzlNkSXfHw8FX/9gfDymRFrQya</passwordSalted>
+        <id>1</id>
+        <propertyLocation id="7">
+          <longitude>3.3</longitude>
+          <latitude>3.3</latitude>
+          <resident class="environmentalscientist" reference="6"/>
+        </propertyLocation>
+        <transactions id="8">
+          <Transaction reference="3"/>
+          <Transaction id="9">
+            <time id="10">12:12:00</time>
+            <date id="11">0012-01-12</date>
+            <changedStatusTo>HEALTHY</changedStatusTo>
+            <resident class="environmentalscientist" reference="6"/>
+            <tree id="12">
+              <species>APPLE</species>
+              <status>TOBECUTDOWN</status>
+              <diameter>3</diameter>
+              <id>1</id>
+              <treeLocation id="13">
+                <longitude>12.0</longitude>
+                <latitude>12.0</latitude>
+                <tree reference="12"/>
+              </treeLocation>
+              <municipality id="14">
+                <name>mun2</name>
+                <trees id="15">
+                  <Tree reference="12"/>
+                  <Tree id="16">
+                    <species>BASSWOOD</species>
+                    <status>HEALTHY</status>
+                    <diameter>3</diameter>
+                    <id>2</id>
+                    <treeLocation id="17">
+                      <longitude>12.0</longitude>
+                      <latitude>12.0</latitude>
+                      <tree reference="16"/>
+                    </treeLocation>
+                    <municipality reference="14"/>
+                    <transactions id="18"/>
+                  </Tree>
+                  <Tree id="19">
+                    <species>CEDAR</species>
+                    <status>HEALTHY</status>
+                    <diameter>3</diameter>
+                    <id>3</id>
+                    <treeLocation id="20">
+                      <longitude>12.0</longitude>
+                      <latitude>12.0</latitude>
+                      <tree reference="19"/>
+                    </treeLocation>
+                    <municipality reference="14"/>
+                    <transactions id="21"/>
+                  </Tree>
+                  <Tree id="22">
+                    <species>CHESTNUT</species>
+                    <status>PLANTED</status>
+                    <diameter>3</diameter>
+                    <id>4</id>
+                    <treeLocation id="23">
+                      <longitude>122.0</longitude>
+                      <latitude>12.0</latitude>
+                      <tree reference="22"/>
+                    </treeLocation>
+                    <municipality reference="14"/>
+                    <transactions id="24"/>
+                  </Tree>
+                  <Tree id="25">
+                    <species>CHESTNUT</species>
+                    <status>PLANTED</status>
+                    <diameter>3</diameter>
+                    <id>5</id>
+                    <treeLocation id="26">
+                      <longitude>12.0</longitude>
+                      <latitude>12.0</latitude>
+                      <tree reference="25"/>
+                    </treeLocation>
+                    <municipality reference="14"/>
+                    <transactions id="27"/>
+                  </Tree>
+                  <Tree id="28">
+                    <species>APPLE</species>
+                    <status>CUTDOWN</status>
+                    <diameter>31</diameter>
+                    <id>6</id>
+                    <treeLocation id="29">
+                      <longitude>132.0</longitude>
+                      <latitude>123.0</latitude>
+                      <tree reference="28"/>
+                    </treeLocation>
+                    <municipality reference="14"/>
+                    <transactions id="30"/>
+                  </Tree>
+                </trees>
+              </municipality>
+              <transactions id="31">
+                <Transaction reference="3"/>
+                <Transaction reference="9"/>
+                <Transaction id="32">
+                  <time id="33">12:12:00</time>
+                  <date id="34">1232-12-01</date>
+                  <changedStatusTo>PLANTED</changedStatusTo>
+                  <resident class="environmentalscientist" reference="6"/>
+                  <tree reference="12"/>
+                </Transaction>
+                <Transaction id="35">
+                  <time id="36">12:12:00</time>
+                  <date id="37">0004-12-31</date>
+                  <changedStatusTo>TOBECUTDOWN</changedStatusTo>
+                  <resident class="environmentalscientist" reference="6"/>
+                  <tree reference="12"/>
+                </Transaction>
+              </transactions>
+            </tree>
+          </Transaction>
+          <Transaction reference="32"/>
+          <Transaction reference="35"/>
+        </transactions>
+      </resident>
+      <tree reference="12"/>
+    </Transaction>
+    <Transaction reference="9"/>
+    <Transaction reference="32"/>
+    <Transaction reference="35"/>
+  </transactions>
+  <residents id="38">
+    <environmentalscientist reference="6"/>
+    <Resident id="39">
+      <name>elias3</name>
+      <email>efa.daf@daf.ca</email>
+      <salt>$2a$10$uirgZ2AQZgR9f3d13nFExe</salt>
+      <passwordSalted>$2a$10$uirgZ2AQZgR9f3d13nFExeRYkGvVSxyO8L3EiuW2FV17VmAekfPmm</passwordSalted>
+      <id>2</id>
+      <propertyLocation id="40">
+        <longitude>13.2</longitude>
+        <latitude>123.3</latitude>
+        <resident reference="39"/>
+      </propertyLocation>
+      <transactions id="41"/>
+    </Resident>
+  </residents>
+  <municipalities id="42">
+    <Municipality id="43">
+      <name>mun1</name>
+      <trees id="44"/>
     </Municipality>
+    <Municipality reference="14"/>
   </municipalities>
-  <trees id="13">
-    <Tree reference="7"/>
-    <Tree reference="10"/>
+  <trees id="45">
+    <Tree reference="12"/>
+    <Tree reference="16"/>
+    <Tree reference="19"/>
+    <Tree reference="22"/>
+    <Tree reference="25"/>
+    <Tree reference="28"/>
   </trees>
-  <locations id="14"/>
+  <locations id="46"/>
 </ca.mcgill.ecse321.treeple.model.TreePLESystem>

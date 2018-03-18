@@ -1,12 +1,5 @@
 <template>
-	<div id="treeple">
-	    <h2>Trees</h2>
-	    <table>
-	      <tr v-for="tree in trees">
-	      	<td> {{tree}} </td>
-	      </tr>
-	    </table>
-
+	<div id="treemap">
 	    <p>
 	      <span v-if="errorTree" style="color:red">Error: {{errorTree}} </span>
 	    </p>
@@ -21,10 +14,9 @@
           :key="index"
           :position="m"
           :clickable="true"
-          :draggable="true"
-          @click="center=m"
+          :draggable="false"
+          @click="updateRight(index)"
         ></gmap-marker>
-
       
     </gmap-map>
   </div>
@@ -55,7 +47,7 @@ Vue.use(VueGoogleMaps, {
 
 //  export module
 export default {
-  name: 'treeple',
+  name: 'treemap',
   data () {
     return {
       trees: [],
@@ -80,13 +72,15 @@ export default {
       .catch(e => {
         this.errorTree = e
       })
+  },
+  methods: {
+    updateRight: function (index) {
+      window.alert(this.trees[index].id)
+    }
   }
 }
 </script>
 
 <style scoped>
-    #myMap {
-    height:300px;
-    width: 100%;
-   }
+  
 </style>

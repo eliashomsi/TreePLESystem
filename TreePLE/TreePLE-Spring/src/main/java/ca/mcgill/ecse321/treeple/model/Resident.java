@@ -6,7 +6,8 @@ import java.util.*;
 import java.sql.Time;
 import java.sql.Date;
 
-// line 90 "../../../../../TreePLE.ump"
+// line 11 "../../../../../TreePLEPersistence.ump"
+// line 93 "../../../../../TreePLE.ump"
 public class Resident
 {
 
@@ -261,6 +262,16 @@ public class Resident
       Transaction aTransaction = transactions.get(i - 1);
       aTransaction.delete();
     }
+  }
+
+  // line 13 "../../../../../TreePLEPersistence.ump"
+   public static  void reinitializeAutouniqueNumber(List<Resident> residents){
+    nextId = 0;
+		for (Resident resident : residents) {
+		if (resident.getId() > nextId) {
+			nextId = resident.getId(); }
+		}
+		nextId++;
   }
 
 
