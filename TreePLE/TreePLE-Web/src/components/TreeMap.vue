@@ -155,6 +155,7 @@ export default {
         var modal = document.getElementById('myModal')
         modal.style.display = 'none'
         this.updateView()
+        this.errorTree = ''
       })
       .catch(e => {
         this.errorTree = e
