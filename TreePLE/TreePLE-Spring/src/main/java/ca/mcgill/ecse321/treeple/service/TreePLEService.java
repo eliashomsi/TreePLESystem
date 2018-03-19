@@ -31,6 +31,11 @@ public class TreePLEService {
 		this.rm = rm;
 		tokens = new ArrayList<Token>();
 	}
+	
+	/** detete **/
+	public void delete() {
+		this.rm.delete();
+	}
 
 	/** Helper Methods **/
 	private Token genToken(String email) {
@@ -172,6 +177,8 @@ public class TreePLEService {
 		if (checkIfNullOrEmptyString(name))
 			throw new InvalidInputException("Municipality Name cannot be empty or null");
 
+		if(name.contains("<script>"))
+			throw new InvalidInputException("Municipality Name cannot be javascript code");
 		Municipality m = new Municipality(name);
 		rm.addMunicipality(m);
 		PersistenceXStream.saveToXMLwithXStream(rm);

@@ -39,6 +39,22 @@ public class TreePLERestController {
 	private ModelMapper modelMapper;
 
 	/**
+	 * this constructor was added to enable tests
+	 * 
+	 * @param service
+	 * @param modelMapper
+	 */
+	public TreePLERestController(TreePLEService service, ModelMapper modelMapper) {
+		super();
+		this.service = service;
+		this.modelMapper = modelMapper;
+	}
+
+	public TreePLERestController() {
+		super();
+	}
+
+	/**
 	 * SHOW INFORMATION
 	 */
 	@RequestMapping("/")
@@ -143,7 +159,14 @@ public class TreePLERestController {
 			@RequestParam(name = "email") String aEmail, @RequestParam(name = "password") String aPassword,
 			@RequestParam(name = "longitude") double lon, @RequestParam(name = "latitude") double lat,
 			@RequestParam(name = "type") String type) throws InvalidInputException {
-
+		
+		if(aName == null || aEmail == null || aPassword == null)
+			throw new InvalidInputException("name/email/password should not be Null");
+		else if (aName.contentEquals("") || aPassword.contentEquals("") || aEmail.contentEquals("")) 
+			throw new InvalidInputException("name/email/password should not be empty");
+		else if(aPassword.length() < 6) 
+			throw new InvalidInputException("password must be at least 6 chars");
+		
 		Resident r = service.CreateResident(aName, aEmail, aPassword, lon, lat, type);
 		return convertToDto(r);
 	}
@@ -234,4 +257,8 @@ public class TreePLERestController {
 
 	/** security related **/
 
+	/** delete **/
+	public void delete() {
+		this.service.delete();
+	}
 }

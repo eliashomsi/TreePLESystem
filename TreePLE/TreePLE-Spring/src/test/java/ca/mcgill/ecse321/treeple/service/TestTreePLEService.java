@@ -140,6 +140,29 @@ public class TestTreePLEService {
 		assertEquals(0, treeSystem.getMunicipalities().size());
 	}
 	
+	@Test
+	public void testCreateMunicipalityWithJavaScriptCode() {
+		assertEquals(0, treeSystem.getMunicipalities().size());
+		
+		String name = "<script> mun1 </script>";
+		
+		String error = null;
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		try {
+			treeService.createMunicipality(name);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		//Check error
+		assertEquals(error, "Municipality Name cannot be javascript code");
+		
+		//Check no change in memory
+		assertEquals(0, treeSystem.getMunicipalities().size());
+	}
+	
 	private void checkResultMunicipality(String name, TreePLESystem treeSystem) {
 		assertEquals(1, treeSystem.getMunicipalities().size());
 		assertEquals(name, treeSystem.getMunicipality(0).getName());

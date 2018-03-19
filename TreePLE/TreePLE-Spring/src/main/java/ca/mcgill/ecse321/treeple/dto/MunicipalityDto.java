@@ -16,6 +16,7 @@ public class MunicipalityDto {
 		this.name = name;
 	}
 
+	
 	public MunicipalityDto() {
 		// TODO Auto-generated constructor stub
 	}
