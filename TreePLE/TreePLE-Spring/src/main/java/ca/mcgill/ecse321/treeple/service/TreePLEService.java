@@ -95,6 +95,9 @@ public class TreePLEService {
 		if (species == null || status == null || diameter == 0 || lon == 0.0d || lat == 0.0d || m == null) {
 			throw new InvalidInputException("You did not provide necessary information for the tree");
 		}
+		if (!(checkIfLocationValid(lon, lat))) {
+			throw new InvalidInputException("Resident did not provide a valid location");
+		}
 			
 		if(diameter < 5) {
 			throw new InvalidInputException("Trees' diameter should be above 5cm.");
