@@ -29,7 +29,7 @@ public class TestTreePLEService {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		PersistenceXStream.initializeModelManager("data.xml");
+		//PersistenceXStream.initializeModelManager("data.xml");
 	}
 
 	@Before
