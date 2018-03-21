@@ -1,11 +1,13 @@
 package ca.mcgill.ecse321.treeple.persistence;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ca.mcgill.ecse321.treeple.model.Location;
@@ -18,6 +20,8 @@ public class TestPersistence {
 
 	private TreePLESystem treeSystem;
 	
+	
+	@Ignore
 	@Before
 	public void setUp() throws Exception {
 		
