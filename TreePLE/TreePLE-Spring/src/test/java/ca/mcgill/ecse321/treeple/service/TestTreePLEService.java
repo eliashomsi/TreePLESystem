@@ -3,11 +3,13 @@ package ca.mcgill.ecse321.treeple.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Calendar;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,9 +34,10 @@ public class TestTreePLEService {
 		PersistenceXStream.initializeModelManager("testdata.xml");
 	}
 	
-	@BeforeClass
+	@AfterClass
 	public static void setUpAfterClass() throws Exception {
-		PersistenceXStream.initializeModelManager("testdata.xml");
+		File f = new File("testdata.xml");
+		f.delete();
 	}
 	
 	@Before
