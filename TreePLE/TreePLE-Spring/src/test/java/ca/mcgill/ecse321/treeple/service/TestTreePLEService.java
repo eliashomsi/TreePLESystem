@@ -29,9 +29,14 @@ public class TestTreePLEService {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		//PersistenceXStream.initializeModelManager("data.xml");
+		PersistenceXStream.initializeModelManager("testdata.xml");
 	}
-
+	
+	@BeforeClass
+	public static void setUpAfterClass() throws Exception {
+		PersistenceXStream.initializeModelManager("testdata.xml");
+	}
+	
 	@Before
 	public void setUp() throws Exception {
 		
@@ -963,21 +968,23 @@ public class TestTreePLEService {
 		
 		int diam = 5;
 		Tree t1 = new Tree(diam, lt, m);
+		int myid = t1.getId();
 		treeSystem.addTree(t1);
 		assertEquals(1, treeSystem.getTrees().size());
-		assertEquals(1, treeSystem.getTree(0).getId());
+		assertEquals(myid, treeSystem.getTree(0).getId());
 		
 		diam = 6;
 		lt = new Location(latitudeT, longitudeT);
 		Tree t2 = new Tree(diam, lt, m);
+		int myid2 = t2.getId();
 		treeSystem.addTree(t2);
 		assertEquals(2, treeSystem.getTrees().size());
-		assertEquals(2, treeSystem.getTree(1).getId());
+		assertEquals(myid2, treeSystem.getTree(1).getId());
 		
 		TreePLEService treeService = new TreePLEService(treeSystem);
 		try {
-			assertEquals(t1, treeService.findTreeById(1));
-			assertEquals(t2, treeService.findTreeById(2));
+			assertEquals(t1, treeService.findTreeById(myid));
+			assertEquals(t2, treeService.findTreeById(myid2));
 		}
 		catch(InvalidInputException e) {
 			fail();
