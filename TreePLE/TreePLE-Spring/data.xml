@@ -1,30 +1,146 @@
 <ca.mcgill.ecse321.treeple.model.TreePLESystem id="1">
-  <transactions id="2"/>
-  <residents id="3"/>
-  <municipalities id="4">
-    <Municipality id="5">
-      <name>St-Leonard</name>
-      <trees id="6">
-        <Tree id="7">
-          <species>ALDER</species>
-          <status>HEALTHY</status>
-          <diameter>10</diameter>
-          <id>24</id>
-          <treeLocation id="8">
-            <longitude>4325.536719</longitude>
-            <latitude>8672.040167</latitude>
-            <tree reference="7"/>
-          </treeLocation>
-          <municipality reference="5"/>
-          <transactions id="9"/>
-        </Tree>
-      </trees>
-    </Municipality>
+  <transactions id="2">
+    <Transaction id="3">
+      <time id="4">14:42:00</time>
+      <date id="5">2018-03-19</date>
+      <changedStatusTo>CUTDOWN</changedStatusTo>
+      <resident id="6">
+        <name>test</name>
+        <email>test@test.ca</email>
+        <salt>$2a$10$U5ixon.WLYYXkJimT7gmde</salt>
+        <passwordSalted>$2a$10$U5ixon.WLYYXkJimT7gmdeGL9.wgcUD4jwWKkLCk1xAKGiaWY7tei</passwordSalted>
+        <id>2</id>
+        <propertyLocation id="7">
+          <longitude>2.0</longitude>
+          <latitude>2.0</latitude>
+          <resident reference="6"/>
+        </propertyLocation>
+        <transactions id="8">
+          <Transaction reference="3"/>
+          <Transaction id="9">
+            <time id="10">14:42:00</time>
+            <date id="11">2018-03-19</date>
+            <changedStatusTo>CUTDOWN</changedStatusTo>
+            <resident reference="6"/>
+            <tree id="12">
+              <species>ASH</species>
+              <status>PLANTED</status>
+              <diameter>11</diameter>
+              <id>25</id>
+              <treeLocation id="13">
+                <longitude>-73.58857583993085</longitude>
+                <latitude>45.49689836807439</latitude>
+                <tree reference="12"/>
+              </treeLocation>
+              <municipality id="14">
+                <name>St-Leonard</name>
+                <trees id="15">
+                  <Tree id="16">
+                    <species>ALDER</species>
+                    <status>HEALTHY</status>
+                    <diameter>10</diameter>
+                    <id>24</id>
+                    <treeLocation id="17">
+                      <longitude>4325.536719</longitude>
+                      <latitude>8672.040167</latitude>
+                      <tree reference="16"/>
+                    </treeLocation>
+                    <municipality reference="14"/>
+                    <transactions id="18"/>
+                  </Tree>
+                  <Tree reference="12"/>
+                  <Tree id="19">
+                    <species>ASH</species>
+                    <status>PLANTED</status>
+                    <diameter>33</diameter>
+                    <id>26</id>
+                    <treeLocation id="20">
+                      <longitude>-73.44648742466234</longitude>
+                      <latitude>45.567308737416035</latitude>
+                      <tree reference="19"/>
+                    </treeLocation>
+                    <municipality reference="14"/>
+                    <transactions id="21"/>
+                  </Tree>
+                </trees>
+              </municipality>
+              <transactions id="22">
+                <Transaction reference="3"/>
+                <Transaction reference="9"/>
+                <Transaction id="23">
+                  <time id="24">14:42:00</time>
+                  <date id="25">2018-03-19</date>
+                  <changedStatusTo>TOBECUTDOWN</changedStatusTo>
+                  <resident reference="6"/>
+                  <tree reference="12"/>
+                </Transaction>
+                <Transaction id="26">
+                  <time id="27">14:42:00</time>
+                  <date id="28">2018-03-19</date>
+                  <changedStatusTo>DISEASED</changedStatusTo>
+                  <resident reference="6"/>
+                  <tree reference="12"/>
+                </Transaction>
+                <Transaction id="29">
+                  <time id="30">14:44:00</time>
+                  <date id="31">2018-03-19</date>
+                  <changedStatusTo>DISEASED</changedStatusTo>
+                  <resident reference="6"/>
+                  <tree reference="12"/>
+                </Transaction>
+                <Transaction id="32">
+                  <time id="33">14:44:00</time>
+                  <date id="34">2018-03-19</date>
+                  <changedStatusTo>PLANTED</changedStatusTo>
+                  <resident reference="6"/>
+                  <tree reference="12"/>
+                </Transaction>
+              </transactions>
+            </tree>
+          </Transaction>
+          <Transaction reference="23"/>
+          <Transaction reference="26"/>
+          <Transaction reference="29"/>
+          <Transaction reference="32"/>
+        </transactions>
+      </resident>
+      <tree reference="12"/>
+    </Transaction>
+    <Transaction reference="9"/>
+    <Transaction reference="23"/>
+    <Transaction reference="26"/>
+    <Transaction reference="29"/>
+    <Transaction reference="32"/>
+  </transactions>
+  <residents id="35">
+    <Resident id="36">
+      <name>lol</name>
+      <email>lol@lol.ca</email>
+      <salt>$2a$10$maDg6SYHn7WdW/WtNq9iOO</salt>
+      <passwordSalted>$2a$10$maDg6SYHn7WdW/WtNq9iOOPSl.f67hfGoZdTfMeKLsAz0CCWRCdPa</passwordSalted>
+      <id>1</id>
+      <propertyLocation id="37">
+        <longitude>2.0</longitude>
+        <latitude>2.0</latitude>
+        <resident reference="36"/>
+      </propertyLocation>
+      <transactions id="38"/>
+    </Resident>
+    <Resident reference="6"/>
+  </residents>
+  <municipalities id="39">
+    <Municipality reference="14"/>
   </municipalities>
-  <trees id="10">
-    <Tree reference="7"/>
+  <trees id="40">
+    <Tree reference="16"/>
+    <Tree reference="12"/>
+    <Tree reference="19"/>
   </trees>
-  <locations id="11">
-    <location reference="8"/>
+  <locations id="41">
+    <location reference="17"/>
+    <location reference="37"/>
+    <location reference="7"/>
+    <location reference="13"/>
+    <location reference="20"/>
   </locations>
 </ca.mcgill.ecse321.treeple.model.TreePLESystem>

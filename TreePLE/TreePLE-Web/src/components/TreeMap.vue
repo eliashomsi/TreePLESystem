@@ -4,13 +4,15 @@
     <br>
 
     <div> hello {{$route.params.resident}} <br> to add a tree right click on the map </div>
-    <div class="alert alert-secondary" role="alert" v-if="errorTree" style="color:red">Error: {{errorTree}}  </div>
+    <div class="alert alert-secondary" role="alert" v-if="errorTree" style="color:red">Error: {{errorTree.response.data.message}}  </div>
+    <div class="alert alert-secondary" role="alert" v-if="errorTransaction" style="color:red">Error: {{errorTransaction}}  </div>
+
 
     <gmap-map 
     id="mymap"
     :center="center"
     :zoom="11"      
-    @rightclick="modalPopUp"
+    @rightclick="modalPopUpNewTree"
     >
 
     <gmap-marker
@@ -32,13 +34,14 @@
           <li> diameter: {{m.treeData.diameter}} </li>
           <li> municipality: {{m.treeData.municipality.name}} </li>
           <li> treeLocation: lng:{{m.treeData.treeLocation.lng}}  lat:{{m.treeData.treeLocation.lat}} </li>
-      </ul>
+        </ul>
+      <button @click="modalPopUpNewTransaction(m.treeData.id)"> Modify This Tree</button>
     </gmap-info-window>
   </gmap-marker>
 
   </gmap-map>
 
-  <!-- The Modal -->
+  <!-- The Modal tree modal-->
   <div id="myModal" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
@@ -62,6 +65,20 @@
       </select>
       
       <button @click="createTree(newTree)">Create</button>
+    </div>
+  </div>
+
+  <!-- The Modal Transaction modal-->
+  <div id="myModal2" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <label> New Status </label>
+      <select v-model="newTransaction.status">
+        <option v-for="status in treestatuslist"> {{status}}</option>
+      </select>
+      
+      <button @click="createTransaction(newTransaction)">Submit</button>
     </div>
   </div>
 
@@ -110,10 +127,13 @@ export default {
       positions: [],
       treestatuslist: [],
       municipalities: [],
-      treespecieslist: []
+      treespecieslist: [],
+      newTransaction: {time: '', date: '', email: '', resident: '', tree: '', status: ''},
+      errorTransaction: ''
     }
   },
   created: function () {
+    this.newTransaction.resident = this.$route.params.resident
     AXIOS.get('/treestatuslist')
     .then(response => {
       // JSON responses are automatically parsed.
@@ -135,12 +155,22 @@ export default {
     this.updateView()
   },
   methods: {
-    modalPopUp: function (e) {
+    modalPopUpNewTree: function (e) {
       this.newTree.treeLocation.lat = e.latLng.lat()
       this.newTree.treeLocation.lng = e.latLng.lng()
       var modal = document.getElementById('myModal')
       modal.style.display = 'block'
       var span = document.getElementsByClassName('close')[0]
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+        modal.style.display = 'none'
+      }
+    },
+    modalPopUpNewTransaction: function (e) {
+      this.newTransaction.tree = e
+      var modal = document.getElementById('myModal2')
+      modal.style.display = 'block'
+      var span = document.getElementsByClassName('close')[1]
       // When the user clicks on <span> (x), close the modal
       span.onclick = function () {
         modal.style.display = 'none'
@@ -159,6 +189,24 @@ export default {
       })
       .catch(e => {
         this.errorTree = e
+      })
+    },
+    createTransaction: function (newTransaction) {
+      var d = new Date()
+      newTransaction.time = d.getHours() + ':' + d.getMinutes()
+      newTransaction.date = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+      AXIOS.post('/transactions/', {}, {
+        params: {time: newTransaction.time, date: newTransaction.date, resident: newTransaction.resident, tree: newTransaction.tree, status: newTransaction.status}
+      })
+      .then(response => {
+        // JSON responses are automatically parsed.
+        var modal = document.getElementById('myModal2')
+        modal.style.display = 'none'
+        this.updateView()
+        this.errorTransaction = ''
+      })
+      .catch(e => {
+        this.errorTransaction = e
       })
     },
     updateView: function () {
