@@ -59,7 +59,7 @@ public class TreePLERestController {
 	 */
 	@RequestMapping("/")
 	public String index() {
-		return "application root please use the front end to contact the controller.\n";
+		return "application root please use the front end to contact the controller jenkins ready.\n";
 	}
 
 	@GetMapping(value = { "/trees", "/trees/" })
