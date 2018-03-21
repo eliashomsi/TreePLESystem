@@ -8,6 +8,7 @@ please check the google doc as it contains all the brain storming
 4. The google maps api is a work in progress. A test is working as a component called map but full implementation is deffered to later iterations.
 
 
+Jenkins now autodeploy on 8088
 ## Creators:
 Al Homsi, Elias
 Chuong, Kevin
