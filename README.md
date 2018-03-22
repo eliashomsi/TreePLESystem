@@ -9,6 +9,10 @@ please check the google doc as it contains all the brain storming
 
 
 Jenkins now autodeploy on 8088
+localtunnel is required!!! to run the backend
+sudo nohup  lt --port 8088 --subdomain treeplesysstem &
+jenkins would now follow the release branch instead of master
+
 ## Creators:
 Al Homsi, Elias
 Chuong, Kevin
