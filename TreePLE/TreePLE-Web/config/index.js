@@ -4,10 +4,10 @@ var path = require('path')
 module.exports = {
   build: {
     env: require('./prod.env'),
-    port: 8080,
-    host:  '127.0.0.1',
-    backendHost: 'treeplesysstem.localtunnel.me',
-    backendPort: 80,
+    port: 8087,
+    host:  '192.168.56.50', // set the real address of frontend VM
+    backendHost: '192.168.56.50', // set it to real address of backend VM
+    backendPort: 8088,
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
@@ -29,8 +29,8 @@ module.exports = {
     env: require('./dev.env'),
     port: 8087,
     host:  '127.0.0.1',
-    backendHost: 'treeplesysstem.localtunnel.me',
-    backendPort: 80,
+    backendHost: '192.168.56.50',
+    backendPort: 8088,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
