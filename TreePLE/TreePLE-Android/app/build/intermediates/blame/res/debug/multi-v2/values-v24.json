@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/student/lol/EventRegistration/EventRegistration-Android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v24/values-v24.xml",
+            "outputFile": "/home/student/Project-13/TreePLE/TreePLE-Android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v24/values-v24.xml",
             "map": [
                 {
                     "source": "/home/student/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/4a322b530fdffd78f729dd8aa7f906ec/res/values-v24/values-v24.xml",
