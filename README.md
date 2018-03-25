@@ -9,6 +9,8 @@ please check the google doc as it contains all the brain storming
 
 
 Jenkins now autodeploy on 8088
+using ngrok to deploy backend
+
 ## Creators:
 Al Homsi, Elias
 Chuong, Kevin

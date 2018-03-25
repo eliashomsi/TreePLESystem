@@ -28,6 +28,10 @@
            <li class="nav-item active">
             <a class="nav-link" href="/#/transactions"> Transactions <span class="sr-only">(current)</span></a>
           </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="http://ecse321-12.ece.mcgill.ca:8080/app-release.apk"> Download APK <span class="sr-only">(current)</span></a>
+          </li>
         </ul>
       </div>
     </nav>

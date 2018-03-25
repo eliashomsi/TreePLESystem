@@ -36,7 +36,7 @@ public class TestPersistence {
 		//Create Municipality
 		Municipality pierrefonds = new Municipality("Pierrefonds");
 		
-		//Create Trees
+		//Create Treeslsl
 		Tree tree1 = new Tree(10, tree1Location, pierrefonds);
 		Tree tree2 = new Tree(15, tree2Location, pierrefonds); 
 		
