@@ -7,7 +7,7 @@ public class TreeDto {
 	private int diameter;
 	private MunicipalityDto municipality;
 	private LocationDto treeLocation;
-
+	
 	public TreeDto(int id, String species, String status, int diameter, MunicipalityDto municipality,
 			LocationDto treeLocation) {
 		super();

@@ -31,7 +31,7 @@ public class TreePLEService {
 		this.rm = rm;
 		tokens = new ArrayList<Token>();
 	}
-	
+
 	/** detete **/
 	public void delete() {
 		this.rm.delete();
@@ -55,13 +55,13 @@ public class TreePLEService {
 	private boolean checkIfNullOrEmptyString(String s) {
 		return s == null || s.trim().contentEquals("");
 	}
-	
+
 	private boolean checkIfLocationValid(double lon, double lat) {
 		boolean isValid = true;
-		if(lon < -180.000000 || lon > 180.000000 ) {
+		if (lon < -180.000000 || lon > 180.000000) {
 			isValid = false;
 		}
-		if(lat < -90.000000 || lat > 90.000000) {
+		if (lat < -90.000000 || lat > 90.000000) {
 			isValid = false;
 		}
 		return isValid;
@@ -76,17 +76,18 @@ public class TreePLEService {
 		String hash = hashPassword(password_plaintext, salt);
 		return hashedPassword.contentEquals(hash);
 	}
-	
+
 	private boolean isValidEmailAddress(String email) {
 		if (!email.contains("@")) {
 			return false;
 		}
 		String[] emailParts = email.split("@");
-		
-		if (emailParts.length != 2 || checkIfNullOrEmptyString(emailParts[0]) || checkIfNullOrEmptyString(emailParts[1])) {
+
+		if (emailParts.length != 2 || checkIfNullOrEmptyString(emailParts[0])
+				|| checkIfNullOrEmptyString(emailParts[1])) {
 			return false;
-		}
-		else return true;
+		} else
+			return true;
 	}
 
 	/** Business Logic **/
@@ -98,15 +99,15 @@ public class TreePLEService {
 		if (!(checkIfLocationValid(lon, lat))) {
 			throw new InvalidInputException("Resident did not provide a valid location");
 		}
-			
-		if(diameter < 5) {
+
+		if (diameter < 5) {
 			throw new InvalidInputException("Trees' diameter should be above 5cm.");
 		}
-		
+
 		for (int i = 0; i < rm.getLocations().size(); i++) {
 			double lonTemp = rm.getLocation(i).getLongitude();
 			double latTemp = rm.getLocation(i).getLatitude();
-			if(lonTemp == lon && latTemp == lat) {
+			if (lonTemp == lon && latTemp == lat) {
 				throw new InvalidInputException("This location is currently occupied");
 			}
 		}
@@ -128,8 +129,7 @@ public class TreePLEService {
 
 		throw new InvalidInputException("Resident was not found");
 	}
-	
-	
+
 	public Tree findTreeById(int id) throws InvalidInputException {
 		for (Tree t : rm.getTrees())
 			if (t.getId() == id)
@@ -139,14 +139,14 @@ public class TreePLEService {
 	}
 
 	public Resident findResidentByEmail(String email) throws InvalidInputException {
-		if(checkIfNullOrEmptyString(email)) {
+		if (checkIfNullOrEmptyString(email)) {
 			throw new InvalidInputException("Email cannot be null or empty.");
 		}
-		
+
 		else if (!isValidEmailAddress(email)) {
 			throw new InvalidInputException("Email is invalid");
 		}
-		
+
 		for (Resident r : findAllResidents()) {
 			if (r.getEmail().contentEquals(email))
 				return r;
@@ -156,7 +156,7 @@ public class TreePLEService {
 
 	public Token checkLogin(String residentEmail, String password_plaintext) throws InvalidInputException {
 		Resident r = findResidentByEmail(residentEmail);
-		
+
 		if (checkPassword(password_plaintext, r.getSalt(), r.getPasswordSalted())) {
 			Token t = genToken(residentEmail);
 			tokens.add(t);
@@ -180,12 +180,31 @@ public class TreePLEService {
 		if (checkIfNullOrEmptyString(name))
 			throw new InvalidInputException("Municipality Name cannot be empty or null");
 
-		if(name.contains("<script>"))
+		if(!validVariableName(name))
+			throw new InvalidInputException("Municipality with invalid name");
+		if (name.contains("<script>"))
 			throw new InvalidInputException("Municipality Name cannot be javascript code");
 		Municipality m = new Municipality(name);
 		rm.addMunicipality(m);
 		PersistenceXStream.saveToXMLwithXStream(rm);
 		return m;
+	}
+	
+	private boolean validVariableName(String m) {
+		if(m.length() == 1)
+			return false;
+		
+		char f = m.charAt(0);
+		
+		if(!Character.isAlphabetic(f))
+			return false;
+		
+		for(int i=1; i<m.length(); i++) {
+			if(!(Character.isAlphabetic(m.charAt(i)) || Character.isDigit(m.charAt(i)) || Character.isSpace(m.charAt(i))))
+				return false;
+		}
+		return true;
+		
 	}
 
 	public Resident CreateResident(String aName, String aEmail, String aPassword, double lon, double lat, String type)
@@ -203,6 +222,9 @@ public class TreePLEService {
 		// creating a resident
 		Resident r = null;
 		type = type.toLowerCase();
+
+		if (!isValidEmailAddress(aEmail))
+			throw new InvalidInputException("email format is not right");
 
 		if (type.contentEquals("resident"))
 			r = new Resident(aName, aEmail, aSalt, aPasswordSalted, aPropertyLocation);
@@ -223,10 +245,15 @@ public class TreePLEService {
 			Transaction.TreeStatus aChangedStatusTo) throws InvalidInputException {
 		if (r == null || t == null || aTime == null || aDate == null || aChangedStatusTo == null)
 			throw new InvalidInputException("Resident is null or Tree is null");
-		else if(!rm.getResidents().contains(r) || !rm.getTrees().contains(t)) {
+		else if (!rm.getResidents().contains(r) || !rm.getTrees().contains(t)) {
 			throw new InvalidInputException("Resident or Tree does not exist!");
-		}
-		else {
+		} else if (!checkForValidOperationAuthorization(r, aChangedStatusTo)) {
+			throw new InvalidInputException("Operation is unauthorized! requires different type of user");
+		} else if (!checkForValidOperationTiming(t, aChangedStatusTo)) {
+			throw new InvalidInputException("Cant change the status to the same type");
+		} else if (!isOwner(r, t)) {
+			throw new InvalidInputException("Tree is owned by another resident");
+		} else {
 			Transaction temp = new Transaction(aTime, aDate, r, t);
 			temp.setChangedStatusTo(aChangedStatusTo);
 
@@ -239,15 +266,67 @@ public class TreePLEService {
 			return temp;
 		}
 	}
-	
-	public Tree markTree(Tree t, Tree.TreeStatus newStatus) throws InvalidInputException{
-		if(t == null || newStatus == null) {
+
+	private boolean checkForValidOperationTiming(Tree t, Transaction.TreeStatus to) throws InvalidInputException {
+
+		Transaction.TreeStatus from = Transaction.TreeStatus.values()[t.getStatus().ordinal()];
+		if (from == to)
+			throw new InvalidInputException("Cant change the status to the same type");
+
+		switch (from) {
+		case DISEASED:
+			if (to == Transaction.TreeStatus.PLANTED)
+				throw new InvalidInputException("Cant change the status from DISEASED TO PLANTED");
+			break;
+		case CUTDOWN:
+			throw new InvalidInputException("After cutdown can't change status");
+		case HEALTHY:
+			break;
+		case PLANTED:
+			break;
+		case TOBECUTDOWN:
+			if (to != Transaction.TreeStatus.CUTDOWN)
+				throw new InvalidInputException("When A tree is marked as to be cutdown the only status is cutdown");
+			break;
+		default:
+			throw new InvalidInputException("Unknown status");
+		}
+		return true;
+	}
+
+	private boolean checkForValidOperationAuthorization(Resident r, Transaction.TreeStatus aChangedStatusTo) {
+		if (r instanceof MunicipalArborist) {
+			return true;
+		} else if (r instanceof EnvironmentalScientist) {
+			return true;
+		} else {
+			if (aChangedStatusTo == Transaction.TreeStatus.DISEASED
+					|| aChangedStatusTo == Transaction.TreeStatus.CUTDOWN
+					|| aChangedStatusTo == Transaction.TreeStatus.PLANTED)
+				return true;
+		}
+		return false;
+	}
+
+	private boolean isOwner(Resident r, Tree t) {
+		// remove restriction from escalated users
+		if (r instanceof MunicipalArborist || r instanceof EnvironmentalScientist)
+			return true;
+
+		if (t.getTransactions() == null || t.numberOfTransactions() == 0)
+			return true;
+		if (t.getTransactions().get(t.numberOfTransactions() - 1).getResident().getEmail().equals(r.getEmail()))
+			return true;
+
+		return false;
+	}
+
+	public Tree markTree(Tree t, Tree.TreeStatus newStatus) throws InvalidInputException {
+		if (t == null || newStatus == null) {
 			throw new InvalidInputException("Tree or Tree status cannot be null!");
-		}
-		else if(!rm.getTrees().contains(t)) {
+		} else if (!rm.getTrees().contains(t)) {
 			throw new InvalidInputException("Tree does not exist!");
-		}
-		else {
+		} else {
 			t.setStatus(newStatus);
 			return t;
 		}

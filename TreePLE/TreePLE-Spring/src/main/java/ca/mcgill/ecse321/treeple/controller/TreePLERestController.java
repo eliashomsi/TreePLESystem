@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -159,16 +160,21 @@ public class TreePLERestController {
 			@RequestParam(name = "email") String aEmail, @RequestParam(name = "password") String aPassword,
 			@RequestParam(name = "longitude") double lon, @RequestParam(name = "latitude") double lat,
 			@RequestParam(name = "type") String type) throws InvalidInputException {
-		
-		if(aName == null || aEmail == null || aPassword == null)
+
+		if (aName == null || aEmail == null || aPassword == null)
 			throw new InvalidInputException("name/email/password should not be Null");
-		else if (aName.contentEquals("") || aPassword.contentEquals("") || aEmail.contentEquals("")) 
+		else if (aName.contentEquals("") || aPassword.contentEquals("") || aEmail.contentEquals(""))
 			throw new InvalidInputException("name/email/password should not be empty");
-		else if(aPassword.length() < 6) 
+		else if (aPassword.length() < 6)
 			throw new InvalidInputException("password must be at least 6 chars");
-		
+		else if(!isValidEmailAddress(aEmail)) 
+			throw new InvalidInputException("email format is not right");
 		Resident r = service.CreateResident(aName, aEmail, aPassword, lon, lat, type);
 		return convertToDto(r);
+	}
+
+	private boolean isValidEmailAddress(String email) {
+		return org.apache.commons.validator.routines.EmailValidator.getInstance().isValid(email);
 	}
 
 	@PostMapping(value = { "/transactions/", "/transactions" })

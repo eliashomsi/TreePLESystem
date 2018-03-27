@@ -14,13 +14,15 @@
           <li class="nav-item active">
             <a class="nav-link" href="/#/municipalities">Municipalities <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/#/trees">Trees <span class="sr-only">(current)</span></a>
-          </li>
-
+         
            <li class="nav-item active">
             <a class="nav-link" href="/#/map">Map <span class="sr-only">(current)</span></a>
           </li>
+
+           <li class="nav-item active">
+            <a class="nav-link" href="/#/trees">Trees <span class="sr-only">(current)</span></a>
+          </li>
+
           <li class="nav-item active">
             <a class="nav-link" href="/#/residents"> Residents <span class="sr-only">(current)</span></a>
           </li>

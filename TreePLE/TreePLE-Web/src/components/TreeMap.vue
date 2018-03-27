@@ -5,7 +5,7 @@
 
     <div> hello {{$route.params.resident}} <br> to add a tree right click on the map </div>
     <div class="alert alert-secondary" role="alert" v-if="errorTree" style="color:red">Error: {{errorTree.response.data.message}}  </div>
-    <div class="alert alert-secondary" role="alert" v-if="errorTransaction" style="color:red">Error: {{errorTransaction}}  </div>
+    <div class="alert alert-secondary" role="alert" v-if="errorTransaction" style="color:red">Error: {{errorTransaction.response.data.message}}  </div>
 
 
     <gmap-map 
@@ -35,7 +35,7 @@
           <li> municipality: {{m.treeData.municipality.name}} </li>
           <li> treeLocation: lng:{{m.treeData.treeLocation.lng}}  lat:{{m.treeData.treeLocation.lat}} </li>
         </ul>
-      <button @click="modalPopUpNewTransaction(m.treeData.id)"> Modify This Tree</button>
+      <button @click="modalPopUpNewTransaction(m.treeData.id)" v-on:click='m.isClicked = !m.isClicked'> Modify This Tree</button>
     </gmap-info-window>
   </gmap-marker>
 
@@ -192,8 +192,13 @@ export default {
       })
     },
     createTransaction: function (newTransaction) {
+      if (!newTransaction.resident) {
+        window.alert('please go back and login')
+        return
+      }
+
       var d = new Date()
-      newTransaction.time = d.getHours() + ':' + d.getMinutes()
+      newTransaction.time = this.padme(d.getHours(), 2) + ':' + this.padme(d.getMinutes(), 2)
       newTransaction.date = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
       AXIOS.post('/transactions/', {}, {
         params: {time: newTransaction.time, date: newTransaction.date, resident: newTransaction.resident, tree: newTransaction.tree, status: newTransaction.status}
@@ -202,14 +207,23 @@ export default {
         // JSON responses are automatically parsed.
         var modal = document.getElementById('myModal2')
         modal.style.display = 'none'
-        this.updateView()
         this.errorTransaction = ''
+        this.updateView()
       })
       .catch(e => {
         this.errorTransaction = e
       })
     },
+    padme: function (num, size) {
+      var s = num + ''
+      while (s.length < size) {
+        s = '0' + s
+      }
+      return s
+    },
     updateView: function () {
+      this.errorTree = ''
+      this.errorTransaction = ''
       AXIOS.get('/municipalities')
       .then(response => {
         // JSON responses are automatically parsed.
@@ -270,7 +284,7 @@ export default {
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 30%;
 }
 
 /* The Close Button */
@@ -306,6 +320,30 @@ input {
 
 :-ms-input-placeholder {  
    text-align: center; 
+}
+
+input {
+  text-align: center; 
+}
+select, input {
+  border-radius: 1em;
+  border-color: none;
+}
+button{
+    background-color: #060E3D;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    display:block;
+    margin:auto;
+    border-radius: 1em;
+    display:inline-block;
+}
+
+button:hover{
+    background-color: #555555;
 }
 
 </style>

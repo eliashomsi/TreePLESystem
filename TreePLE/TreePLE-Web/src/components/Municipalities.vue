@@ -87,4 +87,29 @@ export default {
 #listing li {
   width:0px;
 }
+
+
+input {
+  text-align: center; 
+}
+select, input {
+  border-radius: 1em;
+  border-color: none;
+}
+button{
+    background-color: #060E3D;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    display:block;
+    margin:auto;
+    border-radius: 1em;
+    display:inline-block;
+}
+
+button:hover{
+    background-color: #555555;
+}
 </style>

@@ -39,15 +39,7 @@
                 <option> municipalarborist </option>
               </select>
               <br><br>
-              
-             
-              <label><i> Property Location </i></label>
-              <br>
-              <input type="text" name="lng" placeholder="longitude" value="33.3" v-model="newResident.residentLocation.lng" >
-              <br><br>
-              <input type="text" name="lat" value="32.2" placeholder="latitude" v-model="newResident.residentLocation.lat">
-              <br><br>
-
+            
               <button @click="createResident(newResident)" onclick="document.getElementById('id01').style.display='none'">Register</button>
             </div>
 
@@ -136,13 +128,15 @@ export default {
   methods: {
     createResident: function (newResident) {
       AXIOS.post('/residents/', {}, {
-        params: {name: newResident.name, password: newResident.password, email: newResident.email, longitude: newResident.residentLocation.lng, latitude: newResident.residentLocation.lat, type: newResident.type}
+        params: {name: newResident.name, password: newResident.password, email: newResident.email, longitude: 22, latitude: 22, type: newResident.type}
       })
       .then(response => {
         // JSON responses are automatically parsed.
         this.errorResident = ''
+        this.errorLogin = ''
       })
       .catch(e => {
+        this.errorResident = e
       })
     },
     updateView: function () {
@@ -254,7 +248,7 @@ span.psw{
     border: 1px solid #888888;
     text-align:center;
     padding:auto auto;
-    width: 30%;
+    width: 25%;
 }
 
 .close{
