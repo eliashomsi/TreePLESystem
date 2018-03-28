@@ -1,6 +1,5 @@
 #!/bin/bash
 # building the backend and deploying it
-sudo ip route add 192.168.56.50/32 dev lo
 sudo cp /home/ecse321/workspace/TreePLE/TreePLE/TreePLE-Spring/build/libs/eventregistration-0.0.1-SNAPSHOT.war /opt/tomcat/webapps/ROOT.war
 sudo systemctl stop tomcat
 sudo bash /home/ecse321/catalina.sh stop
