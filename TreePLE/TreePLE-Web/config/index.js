@@ -5,8 +5,8 @@ module.exports = {
   build: {
     env: require('./prod.env'),
     port: 8087,
-    host:  '127.0.0.1',
-    backendHost: '127.0.0.1',
+    host:  'ecse321-12.ece.mcgill.ca',
+    backendHost: 'ecse321-12.ece.mcgill.ca',
     backendPort: 8080,
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
@@ -28,8 +28,8 @@ module.exports = {
   dev: {
     env: require('./dev.env'),
     port: 8087,
-    host:  '127.0.0.1',
-    backendHost: '127.0.0.1',
+    host:  'ecse321-12.ece.mcgill.ca',
+    backendHost: 'ecse321-12.ece.mcgill.ca',
     backendPort: 8080,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
