@@ -1,7 +1,0 @@
-authtoken: 3jHkBxwHBWi4V34mv4Z7b_231qUVR7LL8oKnuScNtdS
-
-tunnels:
-  backend:
-    proto: http
-    addr: 8088
-    inspect: false
