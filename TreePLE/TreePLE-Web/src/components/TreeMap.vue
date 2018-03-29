@@ -193,7 +193,7 @@ export default {
     },
     createTransaction: function (newTransaction) {
       if (!newTransaction.resident) {
-        window.alert('please go back and login')
+        window.alert('please go back and login/register')
         return
       }
 

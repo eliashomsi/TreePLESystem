@@ -21,9 +21,11 @@
                 {
                     "source": "/home/student/Project-13/TreePLE/TreePLE-Android/app/src/debug/res/values/google_maps_api.xml",
                     "from": {
-                        "startLines": "-1",
-                        "startColumns": "-1",
-                        "startOffsets": "-1"
+                        "startLines": "23",
+                        "startColumns": "4",
+                        "startOffsets": "902",
+                        "endColumns": "137",
+                        "endOffsets": "1035"
                     },
                     "to": {
                         "startLines": "836",
@@ -36,11 +38,9 @@
                 {
                     "source": "/home/student/Project-13/TreePLE/TreePLE-Android/app/src/main/res/values/strings.xml",
                     "from": {
-                        "startLines": "-1,-1,-1,-1,-1,-1,-1,19,-1,-1,-1,-1,-1,-1",
-                        "startColumns": "-1,-1,-1,-1,-1,-1,-1,4,-1,-1,-1,-1,-1,-1",
-                        "startOffsets": "-1,-1,-1,-1,-1,-1,-1,974,-1,-1,-1,-1,-1,-1",
-                        "endColumns": "-1,-1,-1,-1,-1,-1,-1,64,-1,-1,-1,-1,-1,-1",
-                        "endOffsets": "-1,-1,-1,-1,-1,-1,-1,1034,-1,-1,-1,-1,-1,-1"
+                        "startLines": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+                        "startColumns": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+                        "startOffsets": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1"
                     },
                     "to": {
                         "startLines": "808,809,810,832,833,834,835,837,838,844,847,848,849,852",

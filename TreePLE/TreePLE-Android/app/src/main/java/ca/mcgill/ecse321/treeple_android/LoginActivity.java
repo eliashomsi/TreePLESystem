@@ -256,7 +256,9 @@ public class LoginActivity extends Activity  {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 createToast("Success");
                 showProgress(false);
-                startActivity(new Intent(LoginActivity.this, MapsActivity.class));
+                Intent intent = new Intent(getBaseContext(), MapsActivity.class);
+                intent.putExtra("email", mEmailView.getText().toString());
+                startActivity(intent);
                 finish();
             }
 

@@ -250,6 +250,7 @@ public class CreateTreeFragment extends DialogFragment implements View.OnClickLi
             this.status = statusSpinner.getSelectedItem().toString();
 
             myActivity.createTree( status, species,  municipality,  diameter, this.point.latitude, this.point.longitude);
+            getDialog().dismiss();
         } else if (v == cancelButton) {
             //cancel action
             getDialog().dismiss();
