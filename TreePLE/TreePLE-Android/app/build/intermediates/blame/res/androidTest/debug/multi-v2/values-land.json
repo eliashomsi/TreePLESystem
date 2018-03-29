@@ -4,6 +4,25 @@
             "outputFile": "/home/student/Project-13/TreePLE/TreePLE-Android/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-land/values-land.xml",
             "map": [
                 {
+                    "source": "/home/student/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/4239d546076e4e2b5c4feaab30bb1c66/res/values-land/values-land.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "232"
+                    },
+                    "to": {
+                        "startLines": "6",
+                        "startColumns": "4",
+                        "startOffsets": "328",
+                        "endLines": "9",
+                        "endColumns": "12",
+                        "endOffsets": "505"
+                    }
+                },
+                {
                     "source": "/home/student/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/f7b02980c2cbed81824efba131fdd004/res/values-land/values-land.xml",
                     "from": {
                         "startLines": "2,3,4,5",
