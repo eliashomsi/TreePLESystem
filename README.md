@@ -15,4 +15,4 @@ using ngrok to deploy backend
 Al Homsi, Elias
 Chuong, Kevin
 Davis, Jeremy
-Décéus, Oscar
+Décéus, Oscar.
