@@ -45,6 +45,7 @@
           <p> resident: {{transaction.resident.name}} </p>
           <p> tree: {{transaction.tree.id}} </p>
           <p> status: {{transaction.status}} </p>
+          <h2> ----------------------- </h2>
         </li>
       </ol>
     </div>

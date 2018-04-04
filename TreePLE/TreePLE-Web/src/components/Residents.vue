@@ -39,6 +39,7 @@
           <p> email: {{resident.email}} </p>
           <p> type: {{resident.type}} </p>
           <p> residentLocation: lng: {{resident.propertyLocation.lng}}  lat:{{resident.propertyLocation.lat}} </p>
+          <h2> ----------------------- </h2>
         </li>
       </ol>
     </div>

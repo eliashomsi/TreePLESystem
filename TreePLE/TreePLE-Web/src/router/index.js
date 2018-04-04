@@ -21,6 +21,11 @@ export default new Router({
       component: Map
     },
     {
+      path: '/map/tree/:id',
+      name: 'TreeMapSelectTree',
+      component: Map
+    },
+    {
       path: '/',
       name: 'Index',
       component: Index

@@ -39,7 +39,8 @@ module.exports = {
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)
     // In our experience, they generally work as expected,
-    // just be aware of this issue when enabling this option.
+    // just be aware of this issue when enabling this option.\
+    // 'ecse321-12.ece.mcgill.ca'
     cssSourceMap: false
   }
 }

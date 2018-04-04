@@ -3,16 +3,21 @@
     <h1> Tree Listing </h1>
     <br>
 
-    <div> hello {{$route.params.resident}} <br> to add a tree right click on the map </div>
+    <div> hello {{$route.params.resident}} <br> to add a tree <b> right click </b> on the map </div>
     <div class="alert alert-secondary" role="alert" v-if="errorTree" style="color:red">Error: {{errorTree.response.data.message}}  </div>
     <div class="alert alert-secondary" role="alert" v-if="errorTransaction" style="color:red">Error: {{errorTransaction.response.data.message}}  </div>
-
+    <div >
+      <h2> display statistical data </h2>
+      <button value="show Polygon" v-on:click='showPolygon = !showPolygon' :disabled="showPolygon == true" >Show Polygon </button>
+      <button value="show bioData insidePolygon" v-on:click='calculateBioDataPolygon' :disabled="!showPolygon" >show bioData insidePolygon </button>
+    </div>
 
     <gmap-map 
     id="mymap"
     :center="center"
     :zoom="11"      
     @rightclick="modalPopUpNewTree"
+    @center_changed="updateCenter"
     >
 
     <gmap-marker
@@ -24,6 +29,9 @@
     :draggable="false"
     v-on:click='m.isClicked = !m.isClicked'
   >
+
+  <gmap-polygon :paths="paths" :editable="true" :dragable="true" @paths_changed="updateEdited($event)" v-if="showPolygon">
+  </gmap-polygon>
       <gmap-info-window
         v-if="m.isClicked"
         :position="m.position">
@@ -82,6 +90,30 @@
     </div>
   </div>
 
+
+  <!-- The Modal for bio data-->
+  <div id="myModal3" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2> most frequent:</h2>
+
+      <h3>species </h3>
+      <ul id="species">
+      </ul>
+      <h3>statuses </h3>
+      <ul id="status">
+      </ul>
+      <h3>diameter</h3>
+      <ul id="diameter">
+      </ul>
+      <h3>municipalities</h3>
+      <ul id="municipality">
+      </ul>
+      <span id="countTrees" > </span>
+    </div>
+  </div>
+
 </div>
 
 </template>
@@ -129,7 +161,12 @@ export default {
       municipalities: [],
       treespecieslist: [],
       newTransaction: {time: '', date: '', email: '', resident: '', tree: '', status: ''},
-      errorTransaction: ''
+      errorTransaction: '',
+      paths: [
+      [ { lat: 45.5, lng: -73.5 }, { lat: 45.53, lng: -73.5 }, { lat: 45.5, lng: -73.5 }, { lat: 45.5, lng: -73.5 } ]
+      ],
+      edited: null,
+      showPolygon: false
     }
   },
   created: function () {
@@ -155,6 +192,46 @@ export default {
     this.updateView()
   },
   methods: {
+    updateEdited (mvcArray) {
+      let paths = []
+      for (let i = 0; i < mvcArray.getLength(); i++) {
+        let path = []
+        for (let j = 0; j < mvcArray.getAt(i).getLength(); j++) {
+          let point = mvcArray.getAt(i).getAt(j)
+          path.push({lat: point.lat(), lng: point.lng()})
+        }
+        paths.push(path)
+      }
+      this.edited = paths
+    },
+    getDistanceFromLatLonInKm: function (pos1, pos2) {
+      var lat1 = pos1.lat
+      var lat2 = pos2.lat
+      var lon1 = pos1.lng
+      var lon2 = pos2.lng
+      var R = 6371// Radius of the earth in km
+      var dLat = this.deg2rad(lat2 - lat1)// deg2rad below
+      var dLon = this.deg2rad(lon2 - lon1)
+      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+      var d = R * c // Distance in km
+      return d
+    },
+    
+    deg2rad: function (deg) {
+      return deg * (Math.PI / 180)
+    },
+    updateCenter (center) {
+      this.center = {
+        lat: center.lat(),
+        lng: center.lng()
+      }
+      this.paths = [
+        [center, center, center, center]
+      ]
+    },
     modalPopUpNewTree: function (e) {
       this.newTree.treeLocation.lat = e.latLng.lat()
       this.newTree.treeLocation.lng = e.latLng.lng()
@@ -221,6 +298,131 @@ export default {
       }
       return s
     },
+    inside: function (point, vs) {
+      // ray-casting algorithm based on
+      // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+      var x = point.lat
+      var y = point.lng
+
+      var inside = false
+      for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        var xi = vs[i].lat
+        var yi = vs[i].lng
+        var xj = vs[j].lat
+        var yj = vs[j].lng
+
+        var intersect = ((yi > y) !== (yj > y)) &&
+            (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
+        if (intersect) inside = !inside
+      }
+
+      return inside
+    },
+    getMostFrequentData (treesInPolygon) {
+      // do calculation
+      var speciesDict = {}
+      var statusDict = {}
+      var municipalityDict = {}
+      var diameterDict = {}
+
+      for (var j = 0; j < treesInPolygon.length; j++) {
+        if (speciesDict[treesInPolygon[j].species] !== undefined) {
+          speciesDict[treesInPolygon[j].species] += 1
+        } else {
+          speciesDict[treesInPolygon[j].species] = 1
+        }
+
+        if (statusDict[treesInPolygon[j].status] !== undefined) {
+          statusDict[treesInPolygon[j].status] += 1
+        } else {
+          statusDict[treesInPolygon[j].status] = 1
+        }
+
+        if (municipalityDict[treesInPolygon[j].municipality.name] !== undefined) {
+          municipalityDict[treesInPolygon[j].municipality.name] += 1
+        } else {
+          municipalityDict[treesInPolygon[j].municipality.name] = 1
+        }
+
+        if (diameterDict[treesInPolygon[j].diameter] !== undefined) {
+          diameterDict[treesInPolygon[j].diameter] += 1
+        } else {
+          diameterDict[treesInPolygon[j].diameter] = 1
+        }
+      }
+
+      var speciesSorted = this.sortObjectFrequency(speciesDict)
+      var statusSorted = this.sortObjectFrequency(statusDict)
+      var municipalitySorted = this.sortObjectFrequency(municipalityDict)
+      var diameterSorted = this.sortObjectFrequency(diameterDict)
+
+      return {'species': speciesSorted, 'status': statusSorted, 'municipality': municipalitySorted, 'diameter': diameterSorted}
+    },
+    calculateBioDataPolygon: function () {
+      this.showPolygon = false
+      let treesInPolygon = []
+      if (!this.edited) {
+        return
+      }
+
+      for (var i = 0; i < this.trees.length; i++) {
+        var e = this.trees[i]
+        if (this.inside(e.treeLocation, this.edited[0])) {
+          treesInPolygon.push(e)
+        }
+      }
+
+      var mostFrequent = this.getMostFrequentData(treesInPolygon)
+
+      var speciesSorted = mostFrequent['species']
+      var statusSorted = mostFrequent['status']
+      var municipalitySorted = mostFrequent['municipality']
+      var diameterSorted = mostFrequent['diameter']
+
+      var modal = document.getElementById('myModal3')
+
+      // add elements to modal
+      var list1 = document.getElementById('species')
+      var list2 = document.getElementById('status')
+      var list3 = document.getElementById('municipality')
+      var list4 = document.getElementById('diameter')
+
+      // fill
+      this.populateList(list1, speciesSorted, treesInPolygon.length)
+      this.populateList(list2, statusSorted, treesInPolygon.length)
+      this.populateList(list3, municipalitySorted, treesInPolygon.length)
+      this.populateList(list4, diameterSorted, treesInPolygon.length)
+      document.getElementById('countTrees').innerHTML = 'trees count: ' + treesInPolygon.length + ' selected from total of ' + this.trees.length
+
+      modal.style.display = 'block'
+      var span = document.getElementsByClassName('close')[2]
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+        modal.style.display = 'none'
+      }
+    },
+    populateList (list, speciesSorted, total) {
+      list.innerHTML = ''
+      for (var i = 0; i < 3 && i < speciesSorted.length; i++) {
+        var li = document.createElement('li')
+        li.appendChild(document.createTextNode('(' + speciesSorted[i][0] + ') ~ ' + Math.round(100 * ((speciesSorted[i][1]) / total)) + '%'))
+        list.appendChild(li)
+      }
+    },
+    sortObjectFrequency: function (maxSpeed) {
+      var sortable = []
+      for (var vehicle in maxSpeed) {
+        sortable.push([vehicle, maxSpeed[vehicle]])
+      }
+      sortable.sort(function (a, b) {
+        return b[1] - a[1]
+      })
+      return sortable
+    },
+    hash: function (obj) {
+      // some unique object-dependent key
+      return obj.totallyUniqueEmployeeIdKey // just an example
+    },
     updateView: function () {
       this.errorTree = ''
       this.errorTransaction = ''
@@ -237,9 +439,15 @@ export default {
       AXIOS.get(`/trees`)
       .then(response => {
         // JSON responses are automatically parsed.
+        var selectedTree = parseInt(this.$route.params.id) - 1
         this.trees = response.data
         for (var i = 0; i < this.trees.length; i++) {
-          this.positions.push({ position: {lat: parseFloat(this.trees[i].treeLocation.lat), lng: parseFloat(this.trees[i].treeLocation.lng)}, icon: {url: 'http://maps.google.com/mapfiles/kml/shapes/parks.png', size: {width: 46, height: 46, f: 'px', b: 'px'}, scaledSize: {width: 23, height: 23, f: 'px', b: 'px'}}, treeData: this.trees[i], isClicked: false })
+          if (i === selectedTree) {
+            this.positions.push({ position: {lat: parseFloat(this.trees[i].treeLocation.lat), lng: parseFloat(this.trees[i].treeLocation.lng)}, icon: {url: 'http://maps.google.com/mapfiles/kml/shapes/star.png', size: {width: 46, height: 46, f: 'px', b: 'px'}, scaledSize: {width: 46, height: 46, f: 'px', b: 'px'}}, treeData: this.trees[i], isClicked: true })
+            this.center = {lat: parseFloat(this.trees[i].treeLocation.lat), lng: parseFloat(this.trees[i].treeLocation.lng)}
+          } else {
+            this.positions.push({ position: {lat: parseFloat(this.trees[i].treeLocation.lat), lng: parseFloat(this.trees[i].treeLocation.lng)}, icon: {url: 'http://maps.google.com/mapfiles/kml/shapes/parks.png', size: {width: 46, height: 46, f: 'px', b: 'px'}, scaledSize: {width: 23, height: 23, f: 'px', b: 'px'}}, treeData: this.trees[i], isClicked: false })
+          }
         }
       })
     .catch(e => {
@@ -344,6 +552,15 @@ button{
 
 button:hover{
     background-color: #555555;
+}
+button:disabled {
+  background-color:gray;
+}
+
+#myModal3 ul {
+  list-style-type: none;
+  text-align: center;
+  margin-left:-3em;
 }
 
 </style>
