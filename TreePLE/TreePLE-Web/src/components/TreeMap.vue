@@ -57,7 +57,7 @@
       </select>
 
       <label> Diameter </label>
-      <input type=text v-model="newTree.diameter" placeholder="Tree Diameter">
+      <input type=text v-model="newTree.diameter" placeholder="Tree Diameter (cm)">
 
       <label> municipality </label>
       <select v-model="newTree.municipality">
