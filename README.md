@@ -41,6 +41,7 @@ global structure which specifies the backend part and the two different front-en
 
 2. The MMVM:
 This structure was used on the website front-end in order to grab the contents from the backend while keeping them in javascript temporarely for display. The model-view objects are DTO (Data transfer objects) that were used to update the view.
+
 ![Image of Branches](https://preview.ibb.co/cgGRMc/mvmm.png)
 
 3. The Layered Architecture:
@@ -97,13 +98,16 @@ The automated build plan was implemented using github and jenkins. Jenkins was s
 
 
 ![Image of Branches](https://preview.ibb.co/h4VxSH/branches.png)
+
 Development Branches
 
 
 ![Image of Branches](https://image.ibb.co/gLpP7H/release_Pipeline.png)
+
 Build
 
 ![Image of Branches](https://preview.ibb.co/hMTTZx/deploy.png)
+
 Deploy
 
 ### ** Iteration 5 and 6 are the presentation and the documentation phases **
