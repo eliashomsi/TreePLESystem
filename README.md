@@ -4,7 +4,8 @@ This project was done on 6 different deliverables for the course of ECSE 321 on 
 ![Image of Branches](https://image.ibb.co/dvMt1c/Introductory_Slide.png)
 
 
-##Table of Contents
+
+Table of Contents
 =================
 
    * [Project-13 (ECSE 321 McGill University Fall 2018)](#project-13-ecse-321-mcgill-university-fall-2018)
