@@ -3,6 +3,32 @@ This project was done on 6 different deliverables for the course of ECSE 321 on 
 
 ![Image of Branches](https://image.ibb.co/dvMt1c/Introductory_Slide.png)
 
+
+##Table of Contents
+=================
+
+   * [Project-13 (ECSE 321 McGill University Fall 2018)](#project-13-ecse-321-mcgill-university-fall-2018)
+      * [Introduction](#introduction)
+      * [The Team](#the-team)
+      * [Challenges Faced](#challenges-faced)
+      * [Project Iterations:](#project-iterations)
+         * [Iteration 1 (Design)](#iteration-1-design)
+            * [choice of architecture](#choice-of-architecture)
+            * [domain model](#domain-model)
+            * [use cases](#use-cases)
+         * [Iteration 2 (Prototype)](#iteration-2-prototype)
+         * [Iteration 3 (Testing)](#iteration-3-testing)
+         * [Iteration 4 (Release PipeLine)](#iteration-4-release-pipeline)
+         * [** Iteration 5 and 6 are the presentation and the documentation phases **](#-iteration-5-and-6-are-the-presentation-and-the-documentation-phases-)
+      * [List of Tools Used:](#list-of-tools-used)
+      * [Unique Features](#unique-features)
+         * [Google-maps-vue2](#google-maps-vue2)
+         * [Displaying statistical data](#displaying-statistical-data)
+         * [Secure Login](#secure-login)
+      * [To make it work](#to-make-it-work)
+      * [To DO (in future iterations)](#to-do-in-future-iterations)
+
+
 ## Introduction
 The system is a Tree management system that displays trees on a map, which allows to modify/update trees. The purpose of this app is to display statistical data useful to the users who are considering a what-if scenario in case of building a new construction over some specific area. It provides bio-diversity index according to search criteria for example Municipality, Species, and Status. We have also decided to release the app to the public domain. It consists of:
 
