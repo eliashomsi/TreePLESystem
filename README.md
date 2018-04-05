@@ -260,6 +260,35 @@ Once the configuration is done. Use the build scripts to generate the:
 
 * systemctl restart apache / systemctl restart httpd
 
+## Project Management
+
+
+### Members
+* Elias Al Homsi Software Lead
+total hours spend on the project is 8 hours per week
+Leadership roles: hold meetings and coordinates integration of new developed features.
+
+* Kevin Chuong - Documentation Manager
+
+* Jeremy Davis - Head of Quality Assurance
+
+* Oscar Décéus - Head of Testing
+
+### Efforts per deliverable
+* The first deliverable took a total of 26 hours between all team members.
+
+* The second deliverable took a total of 23 hours between all team members.
+
+* The third deliverable took a total of 30 hours between all team members.
+
+* The forth deliverable took a total of 40 hours between all team members.
+
+* The fifth deliverable took a total of 31 hours between all team members.
+
+* The sixth deliverable took a total of 36 hours between all team members
+
+** Please find more information on iterations, meeting and project managment in the Documents folder **
+
 ## To DO (in future iterations)
 * Color trees based on species
 
