@@ -1,4 +1,4 @@
-# Project-13 (ECSE 321 McGill University Fall 2018)
+# Project-13 (ECSE 321, McGill University, Winter Semester 2018, Professor: Daniel Varro, Tree Management System)
 This project was done on 6 different deliverables for the course of ECSE 321 on McGill Github.
 
 ![Image of Branches](https://image.ibb.co/dvMt1c/Introductory_Slide.png)
@@ -8,7 +8,8 @@ This project was done on 6 different deliverables for the course of ECSE 321 on 
 Table of Contents
 =================
 
-   * [Project-13 (ECSE 321 McGill University Fall 2018)](#project-13-ecse-321-mcgill-university-fall-2018)
+   * [Project-13 (ECSE 321, McGill University, Winter Semester 2018, Professor: Daniel Varro, Tree Management System)](#project-13-ecse-321-mcgill-university-winter-semester-2018-professor-daniel-varro-tree-management-system)
+   * [Table of Contents](#table-of-contents)
       * [Introduction](#introduction)
       * [The Team](#the-team)
       * [Challenges Faced](#challenges-faced)
@@ -22,12 +23,22 @@ Table of Contents
          * [Iteration 4 (Release PipeLine)](#iteration-4-release-pipeline)
          * [** Iteration 5 and 6 are the presentation and the documentation phases **](#-iteration-5-and-6-are-the-presentation-and-the-documentation-phases-)
       * [List of Tools Used:](#list-of-tools-used)
+      * [Feature List](#feature-list)
+         * [Adding A tree](#adding-a-tree)
+         * [Log in/ Register](#log-in-register)
+         * [Modifying a tree](#modifying-a-tree)
+         * [Listing all information stored on the server](#listing-all-information-stored-on-the-server)
+         * [Downloading the APK from the website](#downloading-the-apk-from-the-website)
       * [Unique Features](#unique-features)
          * [Google-maps-vue2](#google-maps-vue2)
          * [Displaying statistical data](#displaying-statistical-data)
          * [Secure Login](#secure-login)
       * [To make it work](#to-make-it-work)
+         * [War file](#war-file)
+         * [build android](#build-android)
+         * [build the frontend](#build-the-frontend)
       * [To DO (in future iterations)](#to-do-in-future-iterations)
+
 
 
 ## Introduction
@@ -174,11 +185,30 @@ Android studio was used to develop the Android application.
 
 ![Image of Branches](https://preview.ibb.co/j4AWnH/tools.png)
 
+
+## Feature List
+
+### Adding A tree
+on the website right click on the map, on android it is a long press on the map. A pop up would show us asking for information regarding the tree.
+
+
+### Log in/ Register
+in order to be able to modify a tree you should first login/ register on the website. Those credentials would be used on the android application to login to the system.
+
+### Modifying a tree
+Once you click on a tree a bubble would show up to help you modify a tree. Also, in android a long press on that bubble would do the same effect. The modification would ask for the new status to be applied.
+
+### Listing all information stored on the server
+On the website menu tabs are provided so that it would be possible to list information regarding objects in the system. If you click on trees for example, you would see some data highlighted. Clicking on any of these would initiate a search criteria based on all trees of that criteria and display statistical information.
+
+### Downloading the APK from the website
+The website allows the user to download the apk.
+
 ## Unique Features
 
 ### Google-maps-vue2 
 source: https://www.npmjs.com/package/vue2-google-maps
-This is the native library of google maps which allowed easy interaction in Vue.js, The library was used heavily in developing markers and polygon feature for tree selection. Work includes Customized icons, customized notification windows, information bubbles and custom polygons.
+This is the native library of google maps which allowed easy interaction in Vue.js, The library was used heavily in developing markers and polygon feature for tree selection. Work includes Customized icons, customized notification windows, information bubbles and **custom polygons**.
 To Add a tree right click on the map.
 
 ![Image of Branches](https://image.ibb.co/j46t1c/gmapspolygon.png)
@@ -202,6 +232,33 @@ Secure Login
 * modify the URL inside HTTP utils in the android studio application
 
 * make sure your ports are open and if you are trying to run it in McGill make sure you install your VPN
+
+Once the configuration is done. Use the build scripts to generate the:
+
+### War file
+*copy the war file to the /var/lib/tomcat/webapps/ROOT/
+
+*give it the right access permissions
+
+*restart the tomcat server using systemctl tomcat restart
+
+### build android
+* run the ./gradlew assembleRlease inside the root folder of the android
+
+* using the gradle wrapper the app will generate the apk
+
+* Please note that you may need to sign it with your own key (my key is protected on my machine)
+
+### build the frontend
+* npm run build -> from inside the root folder of the website
+
+* this will generate a compiled website with css optimized (with other stuff)
+
+* copy /dist to /var/www/html/
+
+* restart the apache server and configure it to run on 8087
+
+* systemctl restart apache / systemctl restart httpd
 
 ## To DO (in future iterations)
 * Color trees based on species
