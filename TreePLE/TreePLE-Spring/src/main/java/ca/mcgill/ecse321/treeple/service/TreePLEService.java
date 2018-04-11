@@ -116,6 +116,7 @@ public class TreePLEService {
 		Tree t = new Tree(diameter, l, m);
 		t.setSpecies(species);
 		t.setStatus(status);
+		t.setTreeLocation(l);
 		rm.addTree(t);
 		rm.addLocation(l);
 		PersistenceXStream.saveToXMLwithXStream(rm);
@@ -322,15 +323,130 @@ public class TreePLEService {
 	}
 
 	public Tree markTree(Tree t, Tree.TreeStatus newStatus) throws InvalidInputException {
+		
 		if (t == null || newStatus == null) {
+			
 			throw new InvalidInputException("Tree or Tree status cannot be null!");
-		} else if (!rm.getTrees().contains(t)) {
+		} 
+		else if (!rm.getTrees().contains(t)) {
 			throw new InvalidInputException("Tree does not exist!");
-		} else {
+		} 
+		else {
 			t.setStatus(newStatus);
 			return t;
 		}
 	}
+	
+	public Tree editTreeSpecies(Tree t, TreeSpecies newSpecies ) throws InvalidInputException {
+		
+		if (t == null) {
+			
+			throw new InvalidInputException("Tree cannot be null!");
+		} 
+		else if(newSpecies == null) {
+			
+			throw new InvalidInputException("Tree Species cannot be null!");
+		}
+		else if(!rm.getTrees().contains(t)) {
+			
+			throw new InvalidInputException("Tree does not exist!");
+		} 
+		else {
+			t.setSpecies(newSpecies);
+			return t;
+		}
+	}
+	
+	public Tree editTreeDiameter(Tree t, int newDiameter ) throws InvalidInputException {
+		
+		if (t == null) {
+			
+			throw new InvalidInputException("Tree cannot be null!");
+		}
+		else if(newDiameter < 5) {
+			
+			throw new InvalidInputException("Trees' diameter should be above 5cm.");
+		}
+		
+		else if(!rm.getTrees().contains(t)) {
+			
+			throw new InvalidInputException("Tree does not exist!");
+		} 
+		
+		else {
+			t.setDiameter(newDiameter);
+			return t;
+		}
+	}
+	
+	public Tree editTreeLocation(Tree t, double newLon, double newLat) throws InvalidInputException {
+		
+		if (t == null) {
+			
+			throw new InvalidInputException("Tree cannot be null!");
+		}
+		
+		else if(!rm.getTrees().contains(t)) {
+			
+			throw new InvalidInputException("Tree does not exist!");
+			
+		} 
+		
+		else if (!(checkIfLocationValid(newLon, newLat))) {
+			
+			throw new InvalidInputException("Not a valid location!");
+			
+		}
+		else {
+		
+			for (int i = 0; i < rm.getLocations().size(); i++) {
+				double lonTemp = rm.getLocation(i).getLongitude();
+				double latTemp = rm.getLocation(i).getLatitude();
+				if (lonTemp == newLon && latTemp == newLat) {
+					throw new InvalidInputException("This location is currently occupied");
+				}
+			}
+		}
+		
+		t.getTreeLocation().setLatitude(newLat);
+		t.getTreeLocation().setLongitude(newLon);
+		
+		return t;
+	}
+	
+	public Tree editTreeMunicipality(Tree t, Municipality newMunicipality) throws InvalidInputException {
+		
+		if (t == null) {
+			
+			throw new InvalidInputException("Tree cannot be null!");
+		}
+		
+		else if(!rm.getTrees().contains(t)) {
+			
+			throw new InvalidInputException("Tree does not exist!");
+			
+		} 
+		
+		else if (newMunicipality == null) {
+			
+			throw new InvalidInputException("Municipality cannot be null");
+		
+		}
+		
+		else if (!rm.getMunicipalities().contains(newMunicipality)) {
+			
+			throw new InvalidInputException("Municipality does not exist!");
+		
+		}
+		else {
+		
+		t.setMunicipality(newMunicipality);
+		
+		}
+		
+		return t;
+	}
+	
 
 	public List<Tree> findAllTrees() {
 		return rm.getTrees();
