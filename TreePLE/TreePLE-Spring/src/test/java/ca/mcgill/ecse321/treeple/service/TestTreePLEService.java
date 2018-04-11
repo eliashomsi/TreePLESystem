@@ -754,7 +754,7 @@ public class TestTreePLEService {
 		int diameter = 10;
 		double lon = 4325.536719;
 		double lat = 8672.040167;
-		Municipality m = new Municipality("St-Leonard");
+		Municipality m = new Municipality("Namur");
 		treeSystem.addMunicipality(m);
 
 		String error = null;
@@ -1023,5 +1023,451 @@ public class TestTreePLEService {
 
 		assertEquals(error, "Tree was not found");
 	}
+	
+	/*
+	 * Tests For Editing a Tree
+	 */
+	
+	@Test
+	public void testEditTreeSpecies() {
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+
+		String muni = "Mont-Royale";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+
+		int diam = 5;
+		Tree t1 = new Tree(diam, lt, m);
+		
+		treeSystem.addTree(t1);
+		t1.setTreeLocation(lt);
+		t1.setMunicipality(m);
+		assertEquals(1, treeSystem.getTrees().size());
+		
+	    t1.setSpecies(TreeSpecies.BIRCH);
+	    assertEquals(TreeSpecies.BIRCH, treeSystem.getTree(0).getSpecies());
+		
+	    String error = null;
+	    
+		try {
+			treeService.editTreeSpecies(t1, TreeSpecies.ALDER);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(TreeSpecies.ALDER, treeSystem.getTree(0).getSpecies());
+		
+	}
+	
+
+	@Test
+	public void testEditTreeSpeciesNullTree() {
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		Tree t1 = null;
+		
+	    String error = null;
+	    
+		try {
+			treeService.editTreeSpecies(t1, TreeSpecies.ALDER);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Tree cannot be null!");
+		
+	}
+	
+	@Test
+	public void testEditTreeSpeciesTreeNotFound() {
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+
+		String muni = "Brossard";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+
+		int diam = 5;
+		Tree t1 = new Tree(diam, lt, m);
+		int myid = t1.getId();
+		//treeSystem.addTree(t1); The tree is never added to the system
+		t1.setTreeLocation(lt);
+		t1.setMunicipality(m);
+		assertEquals(0, treeSystem.getTrees().size());
+		
+	    t1.setSpecies(TreeSpecies.BIRCH);
+	    
+	    String error = null;
+	    
+		try {
+			treeService.editTreeSpecies(t1, TreeSpecies.ALDER);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Tree does not exist!");
+		
+	}
+	
+	@Test
+	public void testEditTreeSpeciesNullSpecies() {
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+
+		String muni = "Ile-Bizard";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+
+		int diam = 5;
+		Tree t1 = new Tree(diam, lt, m);
+		int myid = t1.getId();
+		treeSystem.addTree(t1);
+		t1.setTreeLocation(lt);
+		t1.setMunicipality(m);
+		assertEquals(1, treeSystem.getTrees().size());
+		
+	    t1.setSpecies(TreeSpecies.BIRCH);
+	    
+	    String error = null;
+	    
+		try {
+			treeService.editTreeSpecies(t1, null);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Tree Species cannot be null!");
+		
+	}
+	
+	@Test
+	public void testEditTreeDiameter() {
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+
+		String muni = "Laval";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+
+		int diam = 10;
+		Tree t1 = new Tree(diam, lt, m);
+		
+		treeSystem.addTree(t1);
+		t1.setTreeLocation(lt);
+		t1.setMunicipality(m);
+		assertEquals(1, treeSystem.getTrees().size());
+		
+	    
+	    assertEquals(10, treeSystem.getTree(0).getDiameter());
+		
+	    String error = null;
+	    
+		try {
+			treeService.editTreeDiameter(t1, 25);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(25, treeSystem.getTree(0).getDiameter());
+		
+	}
+	
+	@Test
+	public void testEditTreeInvalidDiameter() {
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+
+		String muni = "Vaudreuil";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+
+		int diam = 10;
+		Tree t1 = new Tree(diam, lt, m);
+		
+		treeSystem.addTree(t1);
+		t1.setTreeLocation(lt);
+		t1.setMunicipality(m);
+		assertEquals(1, treeSystem.getTrees().size());
+		
+	    
+	    assertEquals(10, treeSystem.getTree(0).getDiameter());
+		
+	    String error = null;
+	    
+		try {
+			treeService.editTreeDiameter(t1, 2);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Trees' diameter should be above 5cm.");
+		
+	}
+	
+	@Test
+	public void testEditTreeLocation() {
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+
+		String muni = "Longeuil";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+
+		int diam = 10;
+		Tree t1 = new Tree(diam, lt, m);
+		
+		treeSystem.addTree(t1);
+		t1.setTreeLocation(lt);
+		t1.setMunicipality(m);
+		assertEquals(1, treeSystem.getTrees().size());
+		
+	    
+	    assertEquals(10, treeSystem.getTree(0).getDiameter());
+	    assertEquals(1234.1234, treeSystem.getTree(0).getTreeLocation().getLatitude(), 0.001);
+	    assertEquals(4321.4321, treeSystem.getTree(0).getTreeLocation().getLongitude(), 0.001);
+		
+	    double newLon = 12.12;
+		double newLat = 14.15;
+	    
+	    String error = null;
+	    
+		try {
+			treeService.editTreeLocation(t1, newLon, newLat);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(14.15, treeSystem.getTree(0).getTreeLocation().getLatitude(), 0.001);
+	    assertEquals(12.12, treeSystem.getTree(0).getTreeLocation().getLongitude(), 0.001);
+		
+	}
+	
+	@Test
+	public void testEditTreeLocationInvalidLocation() {
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+
+		String muni = "Pointe-Claire";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+
+		int diam = 10;
+		Tree t1 = new Tree(diam, lt, m);
+		
+		treeSystem.addTree(t1);
+		t1.setTreeLocation(lt);
+		t1.setMunicipality(m);
+		assertEquals(1, treeSystem.getTrees().size());
+		
+	    
+	    assertEquals(10, treeSystem.getTree(0).getDiameter());
+	    assertEquals(1234.1234, treeSystem.getTree(0).getTreeLocation().getLatitude(), 0.001);
+	    assertEquals(4321.4321, treeSystem.getTree(0).getTreeLocation().getLongitude(), 0.001);
+		
+	    double newLon = -12.12;
+		double newLat = 1444.15;
+	    
+	    String error = null;
+	    
+		try {
+			treeService.editTreeLocation(t1, newLon, newLat);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(1234.1234, treeSystem.getTree(0).getTreeLocation().getLatitude(), 0.001);
+	    assertEquals(4321.4321, treeSystem.getTree(0).getTreeLocation().getLongitude(), 0.001);
+		assertEquals(error, "Not a valid location!");
+	}
+	
+	
+	@Test
+	public void testEditTreeMunicipality() {
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+
+		String muni = "St-Denis";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+
+		int diam = 10;
+		Tree t1 = new Tree(diam, lt, m);
+		
+		treeSystem.addTree(t1);
+		t1.setTreeLocation(lt);
+		t1.setMunicipality(m);
+		assertEquals(1, treeSystem.getTrees().size());
+		
+	    
+	    assertEquals(10, treeSystem.getTree(0).getDiameter());
+	    assertEquals("St-Denis", treeSystem.getTree(0).getMunicipality().getName());
+	    
+	    String muniNew = "St-Leonard";
+		Municipality mNew = new Municipality(muniNew);
+		treeSystem.addMunicipality(mNew);
+		assertEquals(2, treeSystem.getMunicipalities().size());
+	    
+	    String error = null;
+	    
+		try {
+			treeService.editTreeMunicipality(t1, mNew);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("St-Leonard", treeSystem.getTree(0).getMunicipality().getName());
+	}
+	
+	@Test
+	public void testEditTreeMunicipalityNullMunicipality() {
+		
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+
+		String muni = "Cote-Neige";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+
+		int diam = 10;
+		Tree t1 = new Tree(diam, lt, m);
+		
+		treeSystem.addTree(t1);
+		t1.setTreeLocation(lt);
+		t1.setMunicipality(m);
+		assertEquals(1, treeSystem.getTrees().size());
+		
+	    
+	    assertEquals(10, treeSystem.getTree(0).getDiameter());
+	    assertEquals("Cote-Neige", treeSystem.getTree(0).getMunicipality().getName());
+	    
+	    
+	    String error = null;
+	    
+		try {
+			treeService.editTreeMunicipality(t1, null);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Municipality cannot be null");
+	}
+	
+	
+	@Test
+	public void testEditTreeMunicipalityNotFound() {
+		//Test case where the municipality is not null, but is not
+		//found within the system.
+		TreePLEService treeService = new TreePLEService(treeSystem);
+		
+		double longitudeT = 4321.4321;
+		double latitudeT = 1234.1234;
+
+		Location lt = new Location(longitudeT, latitudeT);
+		treeSystem.addLocation(lt);
+		assertEquals(1, treeSystem.getLocations().size());
+
+		String muni = "Cote-Vertu";
+		Municipality m = new Municipality(muni);
+		treeSystem.addMunicipality(m);
+		assertEquals(1, treeSystem.getMunicipalities().size());
+
+		int diam = 10;
+		Tree t1 = new Tree(diam, lt, m);
+		
+		treeSystem.addTree(t1);
+		t1.setTreeLocation(lt);
+		t1.setMunicipality(m);
+		assertEquals(1, treeSystem.getTrees().size());
+		
+	    assertEquals(10, treeSystem.getTree(0).getDiameter());
+	    assertEquals("Cote-Vertu", treeSystem.getTree(0).getMunicipality().getName());
+	    
+	    String error = null;
+	    
+	    Municipality muni2 = new Municipality("Berri-UQAM");
+	    
+		try {
+			treeService.editTreeMunicipality(t1, muni2);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Municipality does not exist!");
+	}
+	
+	
 
 }
