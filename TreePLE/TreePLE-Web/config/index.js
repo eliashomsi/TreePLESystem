@@ -41,6 +41,7 @@ module.exports = {
     // In our experience, they generally work as expected,
     // just be aware of this issue when enabling this option.\
     // 'ecse321-12.ece.mcgill.ca'
+    // localhost
     cssSourceMap: false
   }
 }

@@ -191,6 +191,11 @@ Android studio was used to develop the Android application.
 ### Adding A tree
 on the website right click on the map, on android it is a long press on the map. A pop up would show us asking for information regarding the tree.
 
+### Deleting a Tree
+on the website click on the tree. A pop up would show with the delete tree button.
+
+## Marking a tree
+on the website click on the tree. A pop up would show with the mark tree button.
 
 ### Log in/ Register
 in order to be able to modify a tree you should first login/ register on the website. Those credentials would be used on the android application to login to the system.
@@ -265,29 +270,62 @@ Once the configuration is done. Use the build scripts to generate the:
 
 ### Members
 * Elias Al Homsi Software Lead
-total hours spend on the project is 8 hours per week
+total hours spend on the project is 25 hours per week
 Leadership roles: hold meetings and coordinates integration of new developed features.
+Most of the technical tasks and server/jenkins/pipeline/automation/bashcripting.
+Created a stub for testing the controller using the service.
+Wrote the 90% of the backend, and the full android and Webfrontend.
 
 * Kevin Chuong - Documentation Manager
+total hours spend on the project is 7 hours per week
+Kept track of the documentation and attendance during the meetings
+wrote test cases for part of the services methods.
 
 * Jeremy Davis - Head of Quality Assurance
+total hours spend on the project is 12 hours per week
+Contributed to editing a tree in the backend.
+Made test methods for the backend.
+
 
 * Oscar Décéus - Head of Testing
+total hours spend on the project is 4 hours per week
+Wrote test cases using JUnit.
+Kept track of current tasks and development management.
+Wrote documentation for methods and integration.
 
 ### Efforts per deliverable
-* The first deliverable took a total of 26 hours between all team members.
+* The first deliverable took a total of 36 hours between all team members.
 
-* The second deliverable took a total of 23 hours between all team members.
+* The second deliverable took a total of 43 hours between all team members.
 
-* The third deliverable took a total of 30 hours between all team members.
+* The third deliverable took a total of 37 hours between all team members.
 
-* The forth deliverable took a total of 40 hours between all team members.
+* The forth deliverable took a total of 42 hours between all team members.
 
-* The fifth deliverable took a total of 31 hours between all team members.
+* The fifth deliverable took a total of 41 hours between all team members.
 
-* The sixth deliverable took a total of 36 hours between all team members
+* The sixth deliverable took a total of 56 hours between all team members
+
+Please find documentation about the iterations above in the file. (including the deliverable and the repots).
 
 ** Please find more information on iterations, meeting and project managment in the Documents folder **
+
+### Overview of major iterations
+
+* 12 March 2018
+The first development iteration for the backend was completed including the intial
+
+* 20 March 2018
+The second development itertation included some modifications to the website-frontend
+
+* 25 March 2018
+The third development iteration included the android application and the google-maps api for both front-ends
+
+* 1 April 2018
+The forth development iteration included final work except some documentation and some tree management features
+
+* 14 April 2018
+The fifth development iteration included final work is done and deleting editing a tree is added.
 
 ## To DO (in future iterations)
 * Color trees based on species

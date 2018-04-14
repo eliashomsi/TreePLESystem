@@ -43,7 +43,9 @@
           <li> municipality: {{m.treeData.municipality.name}} </li>
           <li> treeLocation: lng:{{m.treeData.treeLocation.lng}}  lat:{{m.treeData.treeLocation.lat}} </li>
         </ul>
-      <button @click="modalPopUpNewTransaction(m.treeData.id)" v-on:click='m.isClicked = !m.isClicked'> Modify This Tree</button>
+      <button @click="modalPopUpNewTransaction(m.treeData.id)" v-on:click='m.isClicked = !m.isClicked'> Mark This Tree</button>
+      <button @click="deleteTree(m.treeData.id)" v-on:click='m.isClicked = !m.isClicked'> Delete This Tree</button>
+      <button @click="modalPopUpEditTree(m.treeData.id)" v-on:click='m.isClicked = !m.isClicked'> Edit This Tree</button>
     </gmap-info-window>
   </gmap-marker>
 
@@ -114,6 +116,29 @@
     </div>
   </div>
 
+  <!-- The Modal for edit data-->
+  <div id="myModal4" class="modal">
+    <!-- Modal content -->
+   <div class="modal-content">
+      <span class="close">&times;</span>
+     
+      <label> Species </label>
+      <select v-model="newTree.species">
+        <option v-for="species in treespecieslist"> {{species}}</option>
+      </select>
+
+      <label> Diameter </label>
+      <input type=text v-model="newTree.diameter" placeholder="Tree Diameter (cm)">
+
+      <label> municipality </label>
+      <select v-model="newTree.municipality">
+        <option v-for="m in municipalities"> {{m.name}}</option>
+      </select>
+      
+      <button @click="editTree(newTree)">Edit</button>
+    </div>
+  </div>
+
 </div>
 
 </template>
@@ -166,7 +191,9 @@ export default {
       [ { lat: 45.5, lng: -73.5 }, { lat: 45.53, lng: -73.5 }, { lat: 45.5, lng: -73.5 }, { lat: 45.5, lng: -73.5 } ]
       ],
       edited: null,
-      showPolygon: false
+      showPolygon: false,
+      deleteTreeID: 0,
+      editTreeID: 0
     }
   },
   created: function () {
@@ -219,7 +246,6 @@ export default {
       var d = R * c // Distance in km
       return d
     },
-    
     deg2rad: function (deg) {
       return deg * (Math.PI / 180)
     },
@@ -231,6 +257,7 @@ export default {
       this.paths = [
         [center, center, center, center]
       ]
+      this.showPolygon = false
     },
     modalPopUpNewTree: function (e) {
       this.newTree.treeLocation.lat = e.latLng.lat()
@@ -252,6 +279,31 @@ export default {
       span.onclick = function () {
         modal.style.display = 'none'
       }
+    },
+    modalPopUpEditTree: function (id) {
+      this.editTreeID = id
+      var modal = document.getElementById('myModal4')
+      modal.style.display = 'block'
+      var span = document.getElementsByClassName('close')[3]
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+        modal.style.display = 'none'
+      }
+    },
+    deleteTree: function (e) {
+      this.deleteTreeID = e
+      AXIOS.post('/trees/delete', {}, {
+        params: {id: this.deleteTreeID}
+      })
+      .then(response => {
+        // JSON responses are automatically parsed.
+        this.updateView()
+        this.errorTree = ''
+        location.reload()
+      })
+      .catch(e => {
+        this.errorTree = e
+      })
     },
     createTree: function (newTree) {
       AXIOS.post('/trees/', {}, {
@@ -400,6 +452,21 @@ export default {
       span.onclick = function () {
         modal.style.display = 'none'
       }
+    },
+    editTree: function (newTree) {
+      AXIOS.post('/trees/edit/', {}, {
+        params: {treespecies: newTree.species, id: this.editTreeID, diameter: newTree.diameter, municipality: newTree.municipality}
+      })
+      .then(response => {
+        // JSON responses are automatically parsed.
+        var modal = document.getElementById('myModal4')
+        modal.style.display = 'none'
+        this.updateView()
+        this.errorTree = ''
+      })
+      .catch(e => {
+        this.errorTree = e
+      })
     },
     populateList (list, speciesSorted, total) {
       list.innerHTML = ''

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="/">TreePLE  <img src="./assets/logo.png"></a>
+      <a class="navbar-brand" href="/">EverGreen  <img src="./assets/logo.png"></a>
      
       <div class="navbar" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">

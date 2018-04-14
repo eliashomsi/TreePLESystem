@@ -1,8 +1,11 @@
 <template>
 	<div id="index">
     <h1> Welcome to TreePLE System </h1>
+      <br>
+    
     <div id="intro">
-      <div id="buttons">
+      <br>
+    <div id="buttons">
         <div class="alert alert-secondary" role="alert" v-if="errorResident" style="color:red">Error: {{errorResident.response.data.message}}  </div>
         <div class="alert alert-primary" role="alert" v-if="errorLogin" style="color:red">Error: {{errorLogin.response.data.message}}  </div>
         <div class="alert alert-success" role="alert" v-if="loggedin" style="color:red"> 
@@ -162,15 +165,15 @@ export default {
 <style scoped>
 #intro {
   background-image: url("../assets/index-background.png");
-  height: 40em;
+  height: 46em;
   background-repeat: no-repeat;
   background-size: cover;
-  margin-top: 3em;
 }
 
 #buttons {
   position: relative;
-  top: 13em;
+  top: 7em;
+  font-size: 1.5em;
 }
 input {
   text-align: center; 

@@ -138,6 +138,24 @@ public class TreePLERestController {
 		return convertToDto(t);
 	}
 
+	@PostMapping(value = { "/trees/edit", "/trees/edit/" })
+	public void editTree(@RequestParam(name = "id") int id,@RequestParam(name = "treespecies") Tree.TreeSpecies treespecies,
+			@RequestParam(name = "diameter") int diameter, @RequestParam(name = "municipality") MunicipalityDto mDto)
+			throws InvalidInputException {
+		Municipality m = convertToDomainObject(mDto);
+		if (m == null)
+			throw new InvalidInputException("Municipality was not found");
+
+		this.service.editTree(id, treespecies,  diameter, m);
+		
+	}
+
+	@PostMapping(value = { "/trees/delete/", "/trees/delete" })
+	public void deleteTree(@RequestParam(name = "id") int id) throws InvalidInputException {
+
+		service.deleteTree(id);
+	}
+
 	@PostMapping(value = { "/login/", "/login" })
 	public Token login(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password)
 			throws InvalidInputException {
@@ -167,7 +185,7 @@ public class TreePLERestController {
 			throw new InvalidInputException("name/email/password should not be empty");
 		else if (aPassword.length() < 6)
 			throw new InvalidInputException("password must be at least 6 chars");
-		else if(!isValidEmailAddress(aEmail)) 
+		else if (!isValidEmailAddress(aEmail))
 			throw new InvalidInputException("email format is not right");
 		Resident r = service.CreateResident(aName, aEmail, aPassword, lon, lat, type);
 		return convertToDto(r);
